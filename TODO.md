@@ -1,0 +1,4 @@
+- create token mint (assign auth to program)
+- create cm 
+- write program 
+- build ui 
