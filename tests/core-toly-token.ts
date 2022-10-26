@@ -11,7 +11,7 @@ describe("core-toly-token", () => {
   const wl_mint = new PublicKey('CmA4aTPgssfax6bUbk3Lw1LyxpeVJSvk2yPwaeoFAFGH');
   //const wl_mint_generated = new PublicKey('5orS1sa9eRG9V57xgMJYR2MqCGFkFUPVJFEF1eeVsnbL');
   const program = anchor.workspace.CoreTolyToken as Program<CoreTolyToken>;
-  const triesArray = [...Array(1).keys()];
+  const triesArray = [...Array(10).keys()];
   const [mint_auth, bump] = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from("mint_auth")],
     program.programId
