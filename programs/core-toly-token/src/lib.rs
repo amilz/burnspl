@@ -13,8 +13,7 @@ pub mod core_toly_token {
 
     pub fn flip_coin(
         ctx: Context<Flip>, 
-        user_flip: u8, 
-        bump: u8
+        user_flip: u8
     ) -> Result<()> {
         //STEP 1 - Check that a valid flip was submitted   
         require!( user_flip == 0 || user_flip == 1, FlipError::InvalidFlip);
@@ -52,7 +51,7 @@ pub mod core_toly_token {
     
         //STEP 4 - HANDLE WINNER 
         let streak = &mut ctx.accounts.win_streak;
-        msg!("Streak before: {}", streak.counter);
+        msg!("Winning streak before: {}", streak.counter);
 
         if winner {
 
@@ -73,7 +72,7 @@ pub mod core_toly_token {
                     }, 
                     &signer
                 ),
-                1
+                NUM_TOKENS_TO_DROP
             )?;
 
             //  4b - Streak +1
@@ -83,7 +82,7 @@ pub mod core_toly_token {
         else {
             streak.counter = 0;
         }
-        msg!("Streak after: {}", streak.counter);
+        msg!("Winning streak: {}", streak.counter);
 
 
 
@@ -121,7 +120,11 @@ pub struct Flip<'info> {
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     // letting the user pass this in for now (should be one that has proper auth set)
-    #[account(mut)]
+    #[account(
+        mut,
+        constraint = wl_token_mint.key().as_ref() == WL_MINT
+        @FlipError::InvalidMintAddress
+    )]
     pub wl_token_mint: Account<'info, Mint>,
     #[account(
         init_if_needed,
@@ -185,6 +188,7 @@ impl Default for Streak {
     }
 }
 
+// Can be added later to track who is the reining champ.
 /* pub struct Record {
     pub counter: u64,
     pub champ: Option<Pubkey>
@@ -200,5 +204,7 @@ pub enum FlipError {
     #[msg("Flip must be Heads or Tails (0 or 1).")]
     InvalidFlip,
     #[msg("Looks like the fee is going to the wrong location!")]
-    InvalidFeeDestination
+    InvalidFeeDestination,
+    #[msg("The mint address provided is not valid")]
+    InvalidMintAddress
 }
