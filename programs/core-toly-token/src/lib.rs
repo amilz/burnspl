@@ -5,7 +5,7 @@ use anchor_spl::associated_token::AssociatedToken;
 declare_id!("7b8ZM4sAdsL9hP9yjQpYDYKoPK8jdgjnQtQJXUBku6Kf");
 pub mod constants;
 
-use crate::{constants::{PROGRAM_FEE_DESTINATION, PROGRAM_FEE_LAMPORTS}};
+use crate::{constants::{PROGRAM_FEE_DESTINATION, PROGRAM_FEE_LAMPORTS, NUM_TOKENS_TO_DROP, WL_MINT}};
 
 #[program]
 pub mod core_toly_token {
@@ -13,7 +13,8 @@ pub mod core_toly_token {
 
     pub fn flip_coin(
         ctx: Context<Flip>, 
-        user_flip: u8
+        user_flip: u8, 
+        bump: u8
     ) -> Result<()> {
         //STEP 1 - Check that a valid flip was submitted   
         require!( user_flip == 0 || user_flip == 1, FlipError::InvalidFlip);
@@ -49,19 +50,39 @@ pub mod core_toly_token {
 
         msg!("{}: Player selected {} and the coin flip was {}!", result_text, user_flip_text, flip_result_text);
     
-        //STEP 4 - HANDLE WINNER
+        //STEP 4 - HANDLE WINNER 
 
         //  4a - Mint Token
+        /* 
+            Note on Seeds. bump can be passed through from client side (via `findProgramAddressSync`). BUT
+            it works also to use `*ctx.bumps.get("x").unwrap()`, where x is the account name
+        */
+        let seeds = &["mint_auth".as_bytes().as_ref(), &[*ctx.bumps.get("mint_authority").unwrap()]];
+        let signer = [&seeds[..]];
+        mint_to(
+            CpiContext::new_with_signer(
+                ctx.accounts.token_program.to_account_info(), 
+                MintTo {
+                    authority: ctx.accounts.mint_authority.to_account_info(),
+                    to: ctx.accounts.user_wl_ata.to_account_info(),
+                    mint: ctx.accounts.wl_token_mint.to_account_info()
+                }, 
+                &signer
+            ),
+            1
+        )?;
+
         //  4b - Streak +1
         //  4c - If Streak > ATH...replace. 
-
-
-
 
         Ok(())
     }
 
-
+    // hope we don't use this (attempt to mint  out of program)
+    pub fn initialize_token_mint (_ctx: Context<InitializeMint>) ->Result<()> {
+        msg!("token mint initalized.");
+        Ok(())
+    }
 
 }
 
@@ -79,10 +100,57 @@ pub struct Flip<'info> {
     /// CHECK: THIS IS THE TREASURY WALLET
     pub program_fee_destination: AccountInfo<'info>,
 
+    // these below are needed in addition to mint the token
+
+    pub token_program: Program<'info, Token>,
+    pub associated_token_program: Program<'info, AssociatedToken>,
+    // letting the user pass this in for now (should be one that has proper auth set)
+    #[account(mut)]
+    pub wl_token_mint: Account<'info, Mint>,
+    #[account(
+        init_if_needed,
+        payer=flipper,
+        associated_token::mint=wl_token_mint,
+        associated_token::authority=flipper
+    )]
+    pub user_wl_ata: Account<'info, TokenAccount>,
+    pub rent: Sysvar<'info, Rent>,
+
+    /// CHECK: THIS IS A FIXED AUTHORITY (the program)
+    #[account(
+        mut,
+        seeds = ["mint_auth".as_bytes().as_ref()], 
+        bump
+    )]
+    pub mint_authority: UncheckedAccount<'info>,
+
 }
 
 
-
+#[derive(Accounts)]
+pub struct InitializeMint<'info> {
+    /// CHECK: THIS IS A FIXED AUTHORITY (the program)
+    #[account(
+        mut,
+        seeds = ["mint_auth".as_bytes().as_ref()], 
+        bump
+    )]
+    pub mint_authority: UncheckedAccount<'info>,
+    #[account(
+        init,
+        seeds = [b"test"],
+        bump,
+        payer = user,
+        mint::decimals = 0,
+        mint::authority = mint_authority,
+    )]
+    pub mint: Account<'info, Mint>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub token_program: Program<'info, Token>,
+    pub rent: Sysvar<'info, Rent>,
+    pub system_program: Program<'info, System>
+}
 
 #[error_code] 
 pub enum FlipError {

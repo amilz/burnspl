@@ -11,16 +11,8 @@ pub const PROGRAM_FEE_DESTINATION: &[u8] = &[
 
 pub const NUM_TOKENS_TO_DROP: u64 = 1;
 
-// PubKey("GPAZWa1YvEsDb3cacTnEvLVeiiApvZz7aP94NzCRTM4S").as_ref()
-// or (in ts) new PublicKey("GPAZWa1YvEsDb3cacTnEvLVeiiApvZz7aP94NzCRTM4S").toBuffer()
-pub const WL_MINT_OG: &[u8] = &[
-    228, 140, 228,  77,  44, 177,  89, 130,
-    182,   0, 215, 195, 187, 127,  43, 141,
-     12, 167,  55, 178, 207,  16, 108, 252,
-     79, 121, 204, 193, 191,  58, 234, 199
-];
-
-// CmA4aTPgssfax6bUbk3Lw1LyxpeVJSvk2yPwaeoFAFGH
+// PubKey("CmA4aTPgssfax6bUbk3Lw1LyxpeVJSvk2yPwaeoFAFGH").as_ref()
+// or (in ts) new PublicKey("CmA4aTPgssfax6bUbk3Lw1LyxpeVJSvk2yPwaeoFAFGH").toBuffer()
 pub const WL_MINT: &[u8] = &[
     174, 192,  91, 156,  34,  12, 221,  63,
     146,  95, 137, 108,  16,  61,  42, 100,
