@@ -51,28 +51,44 @@ pub mod core_toly_token {
         msg!("{}: Player selected {} and the coin flip was {}!", result_text, user_flip_text, flip_result_text);
     
         //STEP 4 - HANDLE WINNER 
+        let streak = &mut ctx.accounts.win_streak;
+        msg!("Streak before: {}", streak.counter);
 
-        //  4a - Mint Token
-        /* 
-            Note on Seeds. bump can be passed through from client side (via `findProgramAddressSync`). BUT
-            it works also to use `*ctx.bumps.get("x").unwrap()`, where x is the account name
-        */
-        let seeds = &["mint_auth".as_bytes().as_ref(), &[*ctx.bumps.get("mint_authority").unwrap()]];
-        let signer = [&seeds[..]];
-        mint_to(
-            CpiContext::new_with_signer(
-                ctx.accounts.token_program.to_account_info(), 
-                MintTo {
-                    authority: ctx.accounts.mint_authority.to_account_info(),
-                    to: ctx.accounts.user_wl_ata.to_account_info(),
-                    mint: ctx.accounts.wl_token_mint.to_account_info()
-                }, 
-                &signer
-            ),
-            1
-        )?;
+        if winner {
 
-        //  4b - Streak +1
+            //  4a - Mint Token
+            /* 
+                Note on Seeds. bump can be passed through from client side (via `findProgramAddressSync`). BUT
+                it works also to use `*ctx.bumps.get("x").unwrap()`, where x is the account name
+            */
+            let seeds = &["mint_auth".as_bytes().as_ref(), &[*ctx.bumps.get("mint_authority").unwrap()]];
+            let signer = [&seeds[..]];
+            mint_to(
+                CpiContext::new_with_signer(
+                    ctx.accounts.token_program.to_account_info(), 
+                    MintTo {
+                        authority: ctx.accounts.mint_authority.to_account_info(),
+                        to: ctx.accounts.user_wl_ata.to_account_info(),
+                        mint: ctx.accounts.wl_token_mint.to_account_info()
+                    }, 
+                    &signer
+                ),
+                1
+            )?;
+
+            //  4b - Streak +1
+            streak.counter += 1;
+        }
+
+        else {
+            streak.counter = 0;
+        }
+        msg!("Streak after: {}", streak.counter);
+
+
+
+
+
         //  4c - If Streak > ATH...replace. 
 
         Ok(())
@@ -123,7 +139,14 @@ pub struct Flip<'info> {
         bump
     )]
     pub mint_authority: UncheckedAccount<'info>,
-
+    #[account(
+        init_if_needed,
+        payer = flipper,
+        space = 8+8,
+        seeds = ["winning_streak".as_bytes().as_ref(), flipper.key().as_ref()],
+        bump
+    )]
+    pub win_streak: Account<'info,Streak>,
 }
 
 
@@ -151,6 +174,26 @@ pub struct InitializeMint<'info> {
     pub rent: Sysvar<'info, Rent>,
     pub system_program: Program<'info, System>
 }
+
+#[account]
+pub struct Streak {
+    pub counter: u64,
+}
+impl Default for Streak {
+    fn default() -> Self {
+        Streak { counter: (0) }
+    }
+}
+
+/* pub struct Record {
+    pub counter: u64,
+    pub champ: Option<Pubkey>
+}
+impl Default for Record {
+    fn default() -> Self {
+        Record { counter: (0), champ: None }
+    }
+} */
 
 #[error_code] 
 pub enum FlipError {
