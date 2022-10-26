@@ -12,6 +12,6 @@
 Keys: 
 - Cluster: `devnet`
 - ProgramId: `7b8ZM4sAdsL9hP9yjQpYDYKoPK8jdgjnQtQJXUBku6Kf`
-- WLTokenMintId: ``
-- CMID: ``
-
+- WLTokenMintId: `GPAZWa1YvEsDb3cacTnEvLVeiiApvZz7aP94NzCRTM4S`
+- CMID: `EY4NqqrqmLDJd98Xeb3JgbDkSebBDFdQQhi1KvbUhLAU` (https://www.solaneyes.com/address/EY4NqqrqmLDJd98Xeb3JgbDkSebBDFdQQhi1KvbUhLAU)
+- Treasury: `demouAmvsq6CbpdWzVpfampXdzpFQMbDhei55DjzRCn`
