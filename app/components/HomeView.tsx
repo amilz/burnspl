@@ -60,13 +60,13 @@ export const HomeView: FC = ({ }) => {
                 <p className={styles.description}>
                     Flip a coin for <code className={styles.code}>◎{FLIP_COST}</code> for a chance to win a free Mint!
                 </p>
-                <WalletBalances solBalance={solBalance} wlBalance={wlBalance} />
-
+                {connected && <WalletBalances solBalance={solBalance} wlBalance={wlBalance} />
+}
                 {connected &&
                     <div className={styles.grid}>
-                        {(solBalance < 1) && <AirDropSol onComplete={() => refreshSolTrigger(prevCheck => !prevCheck)} />}
-                        {(solBalance > 1) && <FlipCoin onWin={() => refreshWlTrigger(prevCheck => !prevCheck)} />}
-                        {(wlBalance  > 1) && <CandyMachine onComplete={() => refreshWlTrigger(prevCheck => !prevCheck)} />}
+                        {(solBalance < 0.01) && <AirDropSol onComplete={() => refreshSolTrigger(prevCheck => !prevCheck)} />}
+                        {(solBalance >= 0.01) && <FlipCoin onWin={() => refreshWlTrigger(prevCheck => !prevCheck)} />}
+                        {(wlBalance  >= 1) && <CandyMachine onComplete={() => refreshWlTrigger(prevCheck => !prevCheck)} />}
                     </div>}
             </main>
             <Footer/>         
