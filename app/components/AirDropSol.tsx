@@ -68,7 +68,7 @@ const AirDropSol: FC<AirDropProps> = (props: AirDropProps) => {
                 return false;
             }}>
             <h2>{!dropping ? 'Airdrop ◎1' : 'Airdrop in Progress'}</h2>
-            {!dropping ? <p>Looks like you don't have any devnet SOL. Click here to get some...</p>
+            {!dropping ? <p>Looks like you don&apos;t have any devnet SOL. Click here to get some...</p>
             : <Loading/>}
         </a>
     )

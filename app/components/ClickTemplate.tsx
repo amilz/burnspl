@@ -8,7 +8,7 @@ const Template: FC = () => {
         return false;
       }}>
       <h2>Placeholder &rarr;</h2>
-      <p>This is just a sample box -- we'll use this for our components!.</p>
+      <p>This is just a sample box -- we&apos;ll use this for our components!.</p>
     </a>
   )
 }
