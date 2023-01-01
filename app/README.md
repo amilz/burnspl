@@ -2,6 +2,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+```bash
+npm install
+#or
+yarn
+```
+
 Rename `.env.example` to `.env`. 
 Update `NEXT_PUBLIC_RPC` with your devnet RPC or the public: `https://api.devnet.solana.com` 
 

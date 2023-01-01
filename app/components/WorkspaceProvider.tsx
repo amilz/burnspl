@@ -6,9 +6,9 @@ import {
     setProvider,
 } from "@project-serum/anchor"
 import {
-    CoreTolyToken,
-    IDL as CoreTolyTokenIDL,
-} from "../utils/core_toly_token"
+    BurnBonkIdl,
+    IDL,
+} from "../utils/idl"
 import { Connection } from "@solana/web3.js"
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react"
 import MockWallet from "./MockWallet"
@@ -19,7 +19,7 @@ const WorkspaceContext = createContext({})
 interface WorkSpace {
   connection?: Connection
   provider?: AnchorProvider
-  coreTolyProgram?: Program<CoreTolyToken>
+  burnBonkProgram?: Program<BurnBonkIdl>
 }
 
 const WorkspaceProvider = ({ children }: any) => {
@@ -29,14 +29,14 @@ const WorkspaceProvider = ({ children }: any) => {
   const provider = new AnchorProvider(connection, wallet, {})
   setProvider(provider)
 
-  const coreTolyProgram = new Program(CoreTolyTokenIDL as Idl, PROGRAM_ID)
+  const burnBonkProgram = new Program(IDL as Idl, PROGRAM_ID)
 
 
 
   const workspace = {
     connection,
     provider,
-    coreTolyProgram,
+    burnBonkProgram,
   }
 
   return (

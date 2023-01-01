@@ -2,21 +2,19 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import Head from 'next/head'
 import { FC, useEffect, useState } from 'react'
-import AirDropSol from '../components/AirDropSol'
 import Template from '../components/ClickTemplate'
 import styles from '../styles/Home.module.css'
-import { FLIP_COST } from '../utils/constants'
-import { getSolBalance, getWlBalance } from '../utils/solana'
-import CandyMachine from './CandyMachine'
+import { getSolBalance, getBonkBalance } from '../utils/solana'
 import FlipCoin from './FlipCoin'
 import Footer from './Footer'
+import Init from './Init'
 import WalletBalances from './WalletBalances'
 
 export const HomeView: FC = ({ }) => {
     const [solBalance, setSolBalance] = useState<number>(0);
-    const [wlBalance, setWlBalance] = useState<number>(0);
+    const [bonkBalance, setBonkBalance] = useState<number>(0);
     const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
-    const [refreshWl, refreshWlTrigger] = useState<boolean>(false);
+    const [refreshBonk, refreshBonkTrigger] = useState<boolean>(false);
 
     const { publicKey, connected } = useWallet();
     const { connection } = useConnection();
@@ -36,37 +34,36 @@ export const HomeView: FC = ({ }) => {
         if (!publicKey) return;
         (async () => {
             try {
-                let wlBalance = await getWlBalance(publicKey.toString(), connection);
-                setWlBalance(wlBalance);
+                let bonkBalance = await getBonkBalance(publicKey.toString(), connection);
+                setBonkBalance(bonkBalance);
             } catch (err) {
                 console.log(err);
             }
         })();
-    }, [publicKey, connection, refreshWl])
+    }, [publicKey, connection, refreshBonk])
 
     return (
         <div className={styles.container}>
             <Head>
-                <title>Toly Token Flip</title>
+                <title>Bonk Burn</title>
                 <meta name="description" content="BuildSpace Core 2022 Demo Project" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Welcome to <a href="">Toly Flip!</a>
+                    Welcome to <a href="">Bonk Burn!</a>
                 </h1>
                 <WalletMultiButton className={styles["wallet-adapter-button-trigger"]} />
 
                 <p className={styles.description}>
-                    Flip a coin for <code className={styles.code}>◎{FLIP_COST}</code> for a chance to win a free Mint!
+                    Burn <code className={styles.code}>$BONK</code> to join the ranks!
                 </p>
-                {connected && <WalletBalances solBalance={solBalance} wlBalance={wlBalance} />
+                {connected && <WalletBalances solBalance={solBalance} bonkBalance={bonkBalance} />
 }
                 {connected &&
                     <div className={styles.grid}>
-                        {(solBalance < 0.01) && <AirDropSol onComplete={() => refreshSolTrigger(prevCheck => !prevCheck)} />}
-                        {(solBalance >= 0.01) && <FlipCoin onWin={() => refreshWlTrigger(prevCheck => !prevCheck)} />}
-                        {(wlBalance  >= 1) && <CandyMachine onComplete={() => refreshWlTrigger(prevCheck => !prevCheck)} />}
+                        <Init onInit={()=>{console.log('on init')}} /> 
+                        {/* INSERT MEAT HERE */}
                     </div>}
             </main>
             <Footer/>         

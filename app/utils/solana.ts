@@ -1,6 +1,6 @@
 import { Cluster, Connection, LAMPORTS_PER_SOL, PublicKey, GetProgramAccountsFilter } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { WL_MINT } from "./constants";
+import { BONK_MINT } from "./constants";
 
 export function generateExplorerUrl(txId:string, cluster: Cluster = 'devnet', address?: string){
     if (!address) return `https://explorer.solana.com/tx/${txId}/?cluster=${cluster}`;
@@ -29,7 +29,7 @@ export interface TokenAccounts {
     quantity: number
 }
 
-export async function getWlBalance(wallet: string, solanaConnection: Connection) {
+export async function getBonkBalance(wallet: string, solanaConnection: Connection) {
     const filters:GetProgramAccountsFilter[] = [
         {
           dataSize: 165,    //size of account (bytes)
@@ -54,15 +54,15 @@ export async function getWlBalance(wallet: string, solanaConnection: Connection)
             quantity
         }
     });
-    const wlBalance = findWlAccount(tokenSummary);
+    const wlBalance = findBonkAccount(tokenSummary);
     console.log(wlBalance);
     return wlBalance;
 }
 
-export const findWlAccount = (holderTokens: TokenAccounts[]):number => {
-  const wlAccount = holderTokens.find(tokenAccount=>{
-    return tokenAccount.mintAddress === WL_MINT.toString();
+export const findBonkAccount = (holderTokens: TokenAccounts[]):number => {
+  const bonkAccount = holderTokens.find(tokenAccount=>{
+    return tokenAccount.mintAddress === BONK_MINT.toString();
   })
-  if (!wlAccount) return 0;
-  return wlAccount.quantity;
+  if (!bonkAccount) return 0;
+  return bonkAccount.quantity;
 }
