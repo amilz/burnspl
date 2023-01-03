@@ -1,5 +1,5 @@
 # bonk burn
-*program id: BoNKsQizPccMb1a6VMsrX7kJWo5iCjnNLF6ABpvrfUjr*
+*program id: FiRESpaNzgYUiba5vkb44CZJLZjrux1AUECdfwPRsNkg*
 
 
 ### TO DO 
@@ -9,7 +9,7 @@
 
 ### Key Variables: 
 - Cluster: `devnet`
-- ProgramId: `BoNKsQizPccMb1a6VMsrX7kJWo5iCjnNLF6ABpvrfUjr`
+- ProgramId: `FiRESpaNzgYUiba5vkb44CZJLZjrux1AUECdfwPRsNkg`
 - BonkMint: `DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263` 
 
 
