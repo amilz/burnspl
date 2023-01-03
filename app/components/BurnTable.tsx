@@ -18,6 +18,7 @@ interface BurnTableProps {
 const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
   const [burnScores, setBurnScores] = useState<BurnScoreWithPda[]>([]);
   const [userAccount, setUserAccount] = useState<BurnScoreWithPda>();
+  const [updateTable, setUpdateTable] = useState<boolean>(false);
   const [loadingTable, setLoadingTable] = useState(false);
   const [error, setError] = useState<string>('');
   const { connection } = useConnection();
@@ -55,15 +56,17 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
         setLoadingTable(false);
       }
     })();
-  }, [])
+  }, [updateTable])
   useEffect(() => {
-    if (!walletAdapter || !walletAdapter.publicKey || !burnScores) return;
+    if (!walletAdapter || !walletAdapter.publicKey || !burnScores) { setUserAccount(undefined) }
     setUserAccount(burnScores.find(entry => { return walletAdapter?.publicKey?.toString() == entry.account.pyroKey.toString() }));
-  }, [walletAdapter, burnScores])
+  }, [walletAdapter, burnScores, connection])
 
 
   return (<>
-    {userAccount ? <BurnBonk onBurn={() => console.log('BURNED')}/>: <NewUser onInit={() => console.log('INITIATED')} />}
+    {!walletAdapter.publicKey ? <p>Connect Wallet to BONK!</p> :
+      userAccount ? <BurnBonk onBurn={() => setUpdateTable(!updateTable)} /> :
+        <NewUser onInit={() => setUpdateTable(!updateTable)} />}
 
     {burnScores && <table>
       <thead>
@@ -79,7 +82,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
           return <tr key={i}>
             <td>{i+1}</td>
             <td>{entry.account.userName}</td>
-            <td>{entry.account.numBurns}</td>
+            <td>{entry.account.numBurns.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
             <td>{shortWallet(entry.account.pyroKey)}</td>
           </tr>
         })}
