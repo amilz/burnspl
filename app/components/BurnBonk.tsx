@@ -1,13 +1,11 @@
-import { createAccount } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import styles from "../styles/Home.module.css"
 import { BONK_MINT } from "../utils/constants";
-import { createBurnIx, createInitBurnAccountIx } from "../utils/instructions";
+import { createBurnIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import { useWorkspace } from "./WorkspaceProvider";
-import { toast } from "react-toastify";
 
 interface BurnBonkProps {
   onBurn: () => void,
@@ -57,7 +55,6 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
     });
     if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
     console.log('   ✅ - Success!', generateExplorerUrl(signature));
-    toast('Success! '+generateExplorerUrl(signature), { hideProgressBar: true, autoClose: 2000, type: 'success' })
     props.onBurn();
   }
   return (

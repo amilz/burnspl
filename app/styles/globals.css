@@ -2,9 +2,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Press Start 2P', cursive;
-  background: #FF8103;
-  color: white
+  font-family: "Press Start 2P", cursive;
+  background: #ff8103;
+  color: white;
+  text-align: center;
+
 }
 
 a {
@@ -16,9 +18,8 @@ a {
   box-sizing: border-box;
 }
 
-
 button {
-  background-color: #FF8103;
+  background-color: #ff8103;
   border-color: white;
   border-width: 3px;
   border-style: solid;
@@ -28,7 +29,7 @@ button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-family: 'Press Start 2P', cursive;
+  font-family: "Press Start 2P", cursive;
   font-size: 12px;
   margin: 10px;
   cursor: pointer;
@@ -36,22 +37,20 @@ button {
 }
 button:hover {
   background-color: #e4e4e4;
-  color: #FF8103;
-
+  color: #ff8103;
 }
 
-input[type=text], input[type=number] {
+input[type="text"],
+input[type="number"] {
   width: 200px;
   padding: 12px 20px;
   margin: 8px 0;
-  color: #FF8103;
+  color: #ff8103;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
-  font-family: 'Press Start 2P', cursive;
-
+  font-family: "Press Start 2P", cursive;
 }
-
 
 /* Hide spinners Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -61,61 +60,83 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
 
-/* TABLE */
-table {
-  border-collapse: collapse;
-  border-color: white;
-  margin: 0 auto;
+  /* TABLE */
+  table {
+    border-collapse: collapse;
+    border-color: white;
+    margin: 0 auto;
+  }
 
-}
+  td,
+  th {
+    min-width: 150px;
+    text-align: center;
+    max-height: 100px;
+    padding: 15px;
+  }
 
-td, th {
-  min-width: 150px;
-  text-align: center;
-  max-height: 100px;
-  padding: 15px;
-}
+  table,
+  th,
+  td {
+    border: 3px solid;
+  }
 
-table, th, td {
-  border: 3px solid;
-}
+  /* NAVBAR */
+
+  #navbar {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 1;
+    margin-bottom: 5px;
+  }
+  #nav-title {
+    position: absolute;
+    background: #ff8103;
+  }
+
+  .token-balance {
+    font-size: x-small;
+    text-align: right;
+  }
+
+  .buttonHolder {
+    text-align: center;
+  }
+
+  .on-top {
+    z-index: 3;
+  }
+
+  @media (min-width: 800px) {
+    #nav-title {
+      top: -35px;
+      left: 10px;
+      z-index: 1;
+      padding: 15px;
+      font-size: 3em;
+    }
+  }
+  @media (max-width: 800px) {
+    #nav-title {
+      top: -25px;
+      left: 10px;
+      z-index: 1;
+      padding: 15px;
+      font-size: 1.5em;
+    }
+    body, form {
+      min-width: fit-content;
+
+    }
+  }
 
 
-/* NAVBAR */
-
-#navbar {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  z-index: 1;
-  margin-bottom: 5px;
-}
-#nav-title {
-  position: absolute;
-  top: -35px;
-  left: 10px;
-  z-index: 1;
-  padding: 15px;
-  font-size: 3em;
-  background: #FF8103;
-
-}
-
-
-.token-balance {
-  font-size: x-small;
-  text-align: right;
-}
-
-.buttonHolder {
-  text-align: center; 
-}
-
-.on-top {
-  z-index: 3;
+form {
+    display: inline-block;
 }

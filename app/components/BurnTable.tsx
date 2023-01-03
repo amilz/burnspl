@@ -48,6 +48,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
           }
         });
         cleanedScores = cleanedScores.sort(function (a, b) { return b.account.burnedTokens - a.account.burnedTokens });
+        //cleanedScores = cleanedScores.flatMap(i => Array.from({ length: 5 }).fill(i)) as BurnScoreWithPda[];
         if (!cleanedScores) return;
         setTotalBurn(calcTotalBurn(cleanedScores));
         props.updateTotalBurn(calcTotalBurn(cleanedScores))

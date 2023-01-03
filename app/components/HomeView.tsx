@@ -10,6 +10,7 @@ import Image from "next/image";
 import { BONK_MINT } from '../utils/constants'
 import { PublicKey } from '@solana/web3.js'
 import TotalBonkBurned from './TotalBonkBurned'
+import { toast } from "react-toastify";
 
 
 export const HomeView: FC = ({ }) => {
@@ -37,7 +38,7 @@ export const HomeView: FC = ({ }) => {
         <div className={styles.container}>
             <Head>
                 <title>The Bonk Fire</title>
-                <meta name="description" content="BuildSpace Core 2022 Demo Project" />
+                <meta name="description" content="Track BONK Burns" />
                 <link rel="icon" href="/favicon.ico" />
                 {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='' /> */}
