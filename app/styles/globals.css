@@ -98,3 +98,7 @@ table, th, td {
   font-size: x-small;
   text-align: right;
 }
+
+.buttonHolder {
+  text-align: center; 
+}

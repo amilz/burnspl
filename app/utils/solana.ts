@@ -1,6 +1,7 @@
 import { Cluster, Connection, LAMPORTS_PER_SOL, PublicKey, GetProgramAccountsFilter } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { BONK_MINT } from "./constants";
+import { BurnScoreWithPda } from "./idl";
 
 export function generateExplorerUrl(txId:string, cluster: Cluster = 'devnet', address?: string){
     if (!address) return `https://explorer.solana.com/tx/${txId}/?cluster=${cluster}`;
@@ -70,4 +71,10 @@ export const findBonkAccount = (holderTokens: TokenAccounts[]):number => {
 export const shortWallet = (pubkey: PublicKey): string => {
   const length = pubkey.toString().length;
   return `${pubkey.toString().substring(0,5)}...${pubkey.toString().substring(length-4)}`
+}
+
+export const calcTotalBurn = (burns: BurnScoreWithPda[]): number => {
+  let result = 0;
+  burns.forEach(burn=>result+=burn.account.burnedTokens);
+  return result;
 }

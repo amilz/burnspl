@@ -25,14 +25,10 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
   }
   const handleCreateAccount = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!userName) {
-      setError('No name entered');
-      return;
-    }
     // Make sure input is string and eliminate whitespace
     let inputUserName = userName.toString().trim();
-    if (inputUserName.length < 3) {
+
+    if (inputUserName.length < 0) {
       setError('Name is too short');
       return;
     }
@@ -60,9 +56,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
     console.log("   ✅ - Fetched latest blockhash. Last Valid Height:", latestBlockhash.lastValidBlockHeight);
 
     let signature = await walletAdapter.sendTransaction(transaction, connection)
-    /*     let signedTx = await signTransaction(transaction)
-        let signature = await connection.sendTransaction(signedTx);
-        console.log(signature); */
+
     let confirmation = await connection.confirmTransaction({
       signature,
       blockhash: latestBlockhash.blockhash,
@@ -74,19 +68,20 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
   }
   return (
     <form onSubmit={handleCreateAccount}>
+      <div className="buttonHolder">
+
+          <button type="submit">Join the Bonk Fire</button><br/>
+
     <label>
-      Enter Username  <small>(3-8 char) </small>
+      Username  <small>(optional) </small></label><br/>
       <input
         name="userName"
-        required
         id="enterName"
         type="text"
-        minLength={3}
         maxLength={8}
         value={userName}
         onChange={(e) => setUserName(e.target.value)} />
-    </label>
-    <button type="submit">Join The Bonk Fire</button>
+    </div>
   </form>
   )
 }

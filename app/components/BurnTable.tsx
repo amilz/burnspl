@@ -5,12 +5,13 @@ import { FC, useEffect, useMemo, useState } from "react"
 import styles from "../styles/Home.module.css"
 import { BurnScore, BurnScoreWithPda } from "../utils/idl";
 import { createInitBurnAccountIx, fetchBurnAcctsByToken } from "../utils/instructions";
-import { generateExplorerUrl, shortWallet } from "../utils/solana";
+import { calcTotalBurn, generateExplorerUrl, shortWallet } from "../utils/solana";
 import BurnBonk from "./BurnBonk";
 import NewUser from "./NewUser";
 import { useWorkspace } from "./WorkspaceProvider";
 
 interface BurnTableProps {
+  updateTotalBurn: (amt:number)=>void,
   mint?: PublicKey,
   maxRows?: number
 }
@@ -21,6 +22,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
   const [updateTable, setUpdateTable] = useState<boolean>(false);
   const [loadingTable, setLoadingTable] = useState(false);
   const [error, setError] = useState<string>('');
+  const [totalBurn, setTotalBurn] = useState<number>(0);
   const { connection } = useConnection();
   const { burnBoardProgram } = useWorkspace();
   const walletAdapter = useWallet();
@@ -46,8 +48,9 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
           }
         });
         cleanedScores = cleanedScores.sort(function (a, b) { return b.account.numBurns - a.account.numBurns });
-
         if (!cleanedScores) return;
+        setTotalBurn(calcTotalBurn(cleanedScores));
+        props.updateTotalBurn(calcTotalBurn(cleanedScores))
         setBurnScores(cleanedScores);
       } catch (err) {
         console.log(err);
@@ -64,7 +67,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
 
 
   return (<>
-    {!walletAdapter.publicKey ? <p>Connect Wallet to BONK!</p> :
+    {!walletAdapter.publicKey ? <p>Connect Wallet to Burn!</p> :
       userAccount ? <BurnBonk onBurn={() => setUpdateTable(!updateTable)} /> :
         <NewUser onInit={() => setUpdateTable(!updateTable)} />}
 
@@ -74,16 +77,14 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
           <th>Rank</th>
           <th>User</th>
           <th>Amount</th>
-          <th>Pubkey</th>
         </tr>
       </thead>
       <tbody>
         {burnScores.map((entry, i) => {
           return <tr key={i}>
             <td>{i+1}</td>
-            <td>{entry.account.userName}</td>
-            <td>{entry.account.numBurns.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
-            <td>{shortWallet(entry.account.pyroKey)}</td>
+            <td>{entry.account.userName.length > 0 ? entry.account.userName: shortWallet(entry.account.pyroKey)}</td>
+            <td>{entry.account.burnedTokens.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
           </tr>
         })}
       </tbody>
