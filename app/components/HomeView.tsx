@@ -9,6 +9,7 @@ import BonkLogo from '../public/bonklogo.webp';
 import Image from "next/image";
 import { BONK_MINT } from '../utils/constants'
 import { PublicKey } from '@solana/web3.js'
+import TotalBonkBurned from './TotalBonkBurned'
 
 
 export const HomeView: FC = ({ }) => {
@@ -38,15 +39,15 @@ export const HomeView: FC = ({ }) => {
                 <title>The Bonk Fire</title>
                 <meta name="description" content="BuildSpace Core 2022 Demo Project" />
                 <link rel="icon" href="/favicon.ico" />
-                 {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
+                {/* <link rel="preconnect" href="https://fonts.googleapis.com" />
                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='' /> */}
                 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
             </Head>
             <main className={styles.main}>
                 <NavBar tokenBalance={bonkBalance} tokenSymbol={'BONK'} />
-                <Image src={BonkLogo} height={200} alt="Bonk" />
-
-                <BurnTable mint={new PublicKey(BONK_MINT)} updateTotalBurn={(amt)=>{setTotalBurn(amt)} }/>
+                <Image src={BonkLogo} className='on-top' height={200} alt="Bonk" />
+                <TotalBonkBurned bonkBurned={totalBurn} />
+                <BurnTable mint={new PublicKey(BONK_MINT)} updateTotalBurn={(amt) => { setTotalBurn(amt | 0) }} />
                 {/* <Init onInit={()=>{console.log('on init')}} />  */}
             </main>
             {/* <Footer /> */}

@@ -102,3 +102,7 @@ table, th, td {
 .buttonHolder {
   text-align: center; 
 }
+
+.on-top {
+  z-index: 3;
+}
