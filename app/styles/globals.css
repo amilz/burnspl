@@ -2,8 +2,9 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Press Start 2P', cursive;
+  background: #FF8103;
+  color: white
 }
 
 a {
@@ -15,30 +16,85 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
-}
 
 button {
-  background-color: #0070f3;
-  border: none;
+  background-color: #FF8103;
+  border-color: white;
+  border-width: 3px;
+  border-style: solid;
   color: white;
   padding: 15px 32px;
   border-radius: 4px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 4px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
+  margin: 10px;
   cursor: pointer;
   min-width: 110px;
 }
 button:hover {
-  background-color: #125db2;
+  background-color: #e4e4e4;
+  color: #FF8103;
+
+}
+
+input[type=text], input[type=number] {
+  width: 200px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  color: #FF8103;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: 'Press Start 2P', cursive;
+
+}
+
+
+/* TABLE */
+table {
+  border-collapse: collapse;
+  border-color: white;
+  margin: 0 auto;
+
+}
+
+td, th {
+  min-width: 150px;
+  text-align: center;
+  max-height: 100px;
+  padding: 15px;
+}
+
+table, th, td {
+  border: 3px solid;
+}
+
+
+/* NAVBAR */
+
+#navbar {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  z-index: 1;
+  margin-bottom: 5px;
+}
+#nav-title {
+  position: absolute;
+  top: -35px;
+  left: 10px;
+  z-index: 1;
+  padding: 15px;
+  font-size: 3em;
+  background: #FF8103;
+
+}
+
+
+.token-balance {
+  font-size: x-small;
+  text-align: right;
 }

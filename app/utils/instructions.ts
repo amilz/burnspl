@@ -1,25 +1,27 @@
 import { PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY, TransactionInstruction } from "@solana/web3.js"
-import { BurnBonkIdl } from "./idl"
+import { BurnBoardIdl, BurnScore } from "./idl"
 import { Program,  } from "@project-serum/anchor"
 import { ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import { BONK_MINT } from "./constants"
 import { BN } from "bn.js"
+import { FUNGIBLE_USER_SEED } from "./constants"
   
 export async function createInitBurnAccountIx(
-    bonkBurnProgram: Program<BurnBonkIdl>,
+    burnBoardProgram: Program<BurnBoardIdl>,
     userPubkey: PublicKey,
+    mintPubkey: PublicKey,
     userName: string, 
 ): Promise<TransactionInstruction> {
     const [BURN_SCORE] = await PublicKey.findProgramAddressSync(
-        [Buffer.from("bonkburn"), userPubkey.toBytes()],
-        bonkBurnProgram.programId
+        [Buffer.from(FUNGIBLE_USER_SEED), mintPubkey.toBytes(), userPubkey.toBytes()],
+        burnBoardProgram.programId
       );
-    const tx = await bonkBurnProgram.methods
-        .initialize(userName)
+    const tx = await burnBoardProgram.methods
+        .initFungibleUser(userName)
         .accountsStrict({
             newBurnScore: BURN_SCORE,
             signer: userPubkey,
             systemProgram: SystemProgram.programId,
+            mint: mintPubkey
         })
         .instruction()
 
@@ -28,20 +30,21 @@ export async function createInitBurnAccountIx(
 }
 
 export async function createBurnIx(
-    bonkBurnProgram: Program<BurnBonkIdl>,
+    burnBoardProgram: Program<BurnBoardIdl>,
     userPubkey: PublicKey,
-    amountToBurn: string, 
+    mintPubkey: PublicKey,
+    amountToBurn: number, 
 ): Promise<TransactionInstruction> {
     const [BURN_SCORE] = await PublicKey.findProgramAddressSync(
-        [Buffer.from("bonkburn"), userPubkey.toBytes()],
-        bonkBurnProgram.programId
+        [Buffer.from(FUNGIBLE_USER_SEED), mintPubkey.toBytes(), userPubkey.toBytes()],
+        burnBoardProgram.programId
       );
-    const TOKEN_ACCOUNT = await getAssociatedTokenAddress(BONK_MINT,userPubkey);
+    const TOKEN_ACCOUNT = await getAssociatedTokenAddress(mintPubkey,userPubkey);
 
-    const tx = await bonkBurnProgram.methods
-        .burnToken(new BN(amountToBurn))
+    const tx = await burnBoardProgram.methods
+        .burnFungible(new BN(amountToBurn))
         .accountsStrict({
-            mint: BONK_MINT,
+            mint: mintPubkey,
             tokenProgram: TOKEN_PROGRAM_ID,
             from: TOKEN_ACCOUNT,
             authority: userPubkey,
@@ -53,7 +56,14 @@ export async function createBurnIx(
 
 }
   
-
+export async function fetchBurnAcctsByToken(
+    burnBoardProgram: Program<BurnBoardIdl>,
+    mint?:PublicKey,
+    ) {
+    const allBurnAccts = await burnBoardProgram.account.burnScore.all();
+    if (!mint) return allBurnAccts;
+    return allBurnAccts.filter(acct=> acct.account.mint === mint);
+}
   
 
   

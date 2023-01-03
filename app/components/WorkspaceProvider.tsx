@@ -6,7 +6,7 @@ import {
     setProvider,
 } from "@project-serum/anchor"
 import {
-    BurnBonkIdl,
+    BurnBoardIdl,
     IDL,
 } from "../utils/idl"
 import { Connection } from "@solana/web3.js"
@@ -19,7 +19,7 @@ const WorkspaceContext = createContext({})
 interface WorkSpace {
   connection?: Connection
   provider?: AnchorProvider
-  burnBonkProgram?: Program<BurnBonkIdl>
+  burnBoardProgram?: Program<BurnBoardIdl>
 }
 
 const WorkspaceProvider = ({ children }: any) => {
@@ -29,14 +29,14 @@ const WorkspaceProvider = ({ children }: any) => {
   const provider = new AnchorProvider(connection, wallet, {})
   setProvider(provider)
 
-  const burnBonkProgram = new Program(IDL as Idl, PROGRAM_ID)
+  const burnBoardProgram = new Program(IDL as Idl, PROGRAM_ID)
 
 
 
   const workspace = {
     connection,
     provider,
-    burnBonkProgram,
+    burnBoardProgram,
   }
 
   return (

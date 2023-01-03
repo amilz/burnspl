@@ -9,9 +9,9 @@ const Footer: FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Built by{' '}
+                built by{' '}
                 <span className={styles.logo}>
-                    amilz
+                    amilz.sol
                 </span>
             </a>
         </footer>

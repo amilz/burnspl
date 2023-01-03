@@ -66,3 +66,8 @@ export const findBonkAccount = (holderTokens: TokenAccounts[]):number => {
   if (!bonkAccount) return 0;
   return bonkAccount.quantity;
 }
+
+export const shortWallet = (pubkey: PublicKey): string => {
+  const length = pubkey.toString().length;
+  return `${pubkey.toString().substring(0,5)}...${pubkey.toString().substring(length-4)}`
+}

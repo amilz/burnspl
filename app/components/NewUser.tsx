@@ -3,22 +3,29 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import styles from "../styles/Home.module.css"
+import { BONK_MINT } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import { useWorkspace } from "./WorkspaceProvider";
 
-interface InitProps {
+interface NewUserProps {
   onInit: () => void,
 }
 
-const Init: FC<InitProps> = (props:InitProps) => {
+const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
+  const [burnAmount, setBurnAmount] = useState<number>(0);
   const [userName, setUserName] = useState<string>('');
   const [error, setError] = useState<string>('');
   const { connection } = useConnection();
-  const { burnBonkProgram } = useWorkspace();
+  const { burnBoardProgram } = useWorkspace();
   const walletAdapter = useWallet();
 
-  const handleCreateAccount = () => {
+  const updateNumber = () => {
+    
+  }
+  const handleCreateAccount = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!userName) {
       setError('No name entered');
       return;
@@ -37,13 +44,14 @@ const Init: FC<InitProps> = (props:InitProps) => {
     setError('');
   }
   const createAccount = async (username: string) => {
-    if (!burnBonkProgram) throw new Error('No Program Found');
+    if (!burnBoardProgram) throw new Error('No Program Found');
     if (!walletAdapter.publicKey || !walletAdapter) throw new Error('No PubKey Found');
     const transaction = new Transaction;
     let txInstructions = await createInitBurnAccountIx(
-      burnBonkProgram,
+      burnBoardProgram,
       walletAdapter.publicKey,
-      userName,
+      BONK_MINT,
+      userName
     );
     transaction.add(txInstructions);
 
@@ -65,29 +73,23 @@ const Init: FC<InitProps> = (props:InitProps) => {
     props.onInit();
   }
   return (
-    <a href="#" className={styles.card}
-      onClick={() => {
-        return false;
-      }}>
-      <h2>Create Burn Account to join leaderboard</h2>
-      <form onSubmit={handleCreateAccount}>
-        <label>
-          Enter Username  <small>(3-8 char)</small>
-          <input
-            name="userName"
-            required
-            id="enterName"
-            type="text"
-            minLength={3}
-            maxLength={8}
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)} />
-        </label>
-        <button type="submit">Create Account</button>
-      </form>
-    </a>
+    <form onSubmit={handleCreateAccount}>
+    <label>
+      Enter Username  <small>(3-8 char) </small>
+      <input
+        name="userName"
+        required
+        id="enterName"
+        type="text"
+        minLength={3}
+        maxLength={8}
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)} />
+    </label>
+    <button type="submit">Join The Bonk Fire</button>
+  </form>
   )
 }
 
-export default Init
+export default NewUser;
 
