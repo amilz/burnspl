@@ -8,10 +8,9 @@ interface TotalBonkBurnedProps {
 const TotalBonkBurned: FC<TotalBonkBurnedProps> = (props:TotalBonkBurnedProps) => {
   return (
     <p className={styles.description}>
-      TOTAL BONK BURNED:<div className='bonk-amt'>{props.bonkBurned}</div> 
+      TOTAL BONK BURNED:<span className='bonk-amt'>{props.bonkBurned.toLocaleString(undefined,{maximumFractionDigits:0})}</span> 
     </p>
   )
 }
 
 export default TotalBonkBurned
-
