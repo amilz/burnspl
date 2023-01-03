@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css"
 import { BONK_MINT } from "../utils/constants";
 import { createBurnIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
+import Loading from "./Loading";
 import { useWorkspace } from "./WorkspaceProvider";
 
 interface BurnBonkProps {
@@ -13,6 +14,7 @@ interface BurnBonkProps {
 
 const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
   const [burnAmount, setBurnAmount] = useState(0);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { connection } = useConnection();
   const { burnBoardProgram } = useWorkspace();
@@ -28,36 +30,49 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
       setError('Enter a positive value');
       return;
     }
+    setLoading(true);
     burnTokens(burnAmount);
     setError('');
   }
   const burnTokens = async (amount: number) => {
     if (!burnBoardProgram) throw new Error('No Program Found');
     if (!walletAdapter.publicKey || !walletAdapter) throw new Error('No PubKey Found');
-    const transaction = new Transaction;
-    let txInstructions = await createBurnIx(
-      burnBoardProgram,
-      walletAdapter.publicKey,
-      BONK_MINT,
-      amount
-    );
-    transaction.add(txInstructions);
 
-    // Step 1 - Fetch Latest Blockhash
-    let latestBlockhash = await connection.getLatestBlockhash('finalized');
-    console.log("   ✅ - Fetched latest blockhash. Last Valid Height:", latestBlockhash.lastValidBlockHeight);
+    try {
+      const transaction = new Transaction;
+      let txInstructions = await createBurnIx(
+        burnBoardProgram,
+        walletAdapter.publicKey,
+        BONK_MINT,
+        amount
+      );
+      transaction.add(txInstructions);
+  
+      // Step 1 - Fetch Latest Blockhash
+      let latestBlockhash = await connection.getLatestBlockhash('finalized');
+      console.log("   ✅ - Fetched latest blockhash. Last Valid Height:", latestBlockhash.lastValidBlockHeight);
+  
+      let signature = await walletAdapter.sendTransaction(transaction, connection)
+      let confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
+      });
+      if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
+      console.log('   ✅ - Success!', generateExplorerUrl(signature));
+      props.onBurn();
+    }
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      setLoading(false);
+    }
 
-    let signature = await walletAdapter.sendTransaction(transaction, connection)
-    let confirmation = await connection.confirmTransaction({
-      signature,
-      blockhash: latestBlockhash.blockhash,
-      lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
-    });
-    if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
-    console.log('   ✅ - Success!', generateExplorerUrl(signature));
-    props.onBurn();
+
   }
   return (
+    loading ? <Loading show={true} text={'BURNING BONK'}/>:
     <form onSubmit={handleBurn}>
     <label>
       How much $BONK to burn? &nbsp;

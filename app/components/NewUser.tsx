@@ -6,6 +6,7 @@ import styles from "../styles/Home.module.css"
 import { BONK_MINT } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
+import Loading from "./Loading";
 import { useWorkspace } from "./WorkspaceProvider";
 
 interface NewUserProps {
@@ -13,8 +14,8 @@ interface NewUserProps {
 }
 
 const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
-  const [burnAmount, setBurnAmount] = useState<number>(0);
   const [userName, setUserName] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const { connection } = useConnection();
   const { burnBoardProgram } = useWorkspace();
@@ -36,37 +37,48 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
       setError('Name is too long');
       return;
     }
+    setLoading(true);
     createAccount(inputUserName);
     setError('');
   }
   const createAccount = async (username: string) => {
     if (!burnBoardProgram) throw new Error('No Program Found');
     if (!walletAdapter.publicKey || !walletAdapter) throw new Error('No PubKey Found');
-    const transaction = new Transaction;
-    let txInstructions = await createInitBurnAccountIx(
-      burnBoardProgram,
-      walletAdapter.publicKey,
-      BONK_MINT,
-      userName
-    );
-    transaction.add(txInstructions);
+    try {
+      const transaction = new Transaction;
+      let txInstructions = await createInitBurnAccountIx(
+        burnBoardProgram,
+        walletAdapter.publicKey,
+        BONK_MINT,
+        userName
+      );
+      transaction.add(txInstructions);
+  
+      // Step 1 - Fetch Latest Blockhash
+      let latestBlockhash = await connection.getLatestBlockhash('finalized');
+      console.log("   ✅ - Fetched latest blockhash. Last Valid Height:", latestBlockhash.lastValidBlockHeight);
+  
+      let signature = await walletAdapter.sendTransaction(transaction, connection)
+  
+      let confirmation = await connection.confirmTransaction({
+        signature,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
+      });
+      if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
+      console.log('   ✅ - Success!', generateExplorerUrl(signature));
+      props.onInit();
+    }
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      setLoading(false);
+    }
 
-    // Step 1 - Fetch Latest Blockhash
-    let latestBlockhash = await connection.getLatestBlockhash('finalized');
-    console.log("   ✅ - Fetched latest blockhash. Last Valid Height:", latestBlockhash.lastValidBlockHeight);
-
-    let signature = await walletAdapter.sendTransaction(transaction, connection)
-
-    let confirmation = await connection.confirmTransaction({
-      signature,
-      blockhash: latestBlockhash.blockhash,
-      lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
-    });
-    if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
-    console.log('   ✅ - Success!', generateExplorerUrl(signature));
-    props.onInit();
   }
   return (
+    loading ? <Loading show={true} text={'New BONKer in Progress'}/>:
     <form onSubmit={handleCreateAccount}>
       <div className="buttonHolder">
 

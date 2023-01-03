@@ -7,6 +7,7 @@ import { BurnScore, BurnScoreWithPda } from "../utils/idl";
 import { createInitBurnAccountIx, fetchBurnAcctsByToken } from "../utils/instructions";
 import { calcTotalBurn, generateExplorerUrl, shortWallet } from "../utils/solana";
 import BurnBonk from "./BurnBonk";
+import Loading from "./Loading";
 import NewUser from "./NewUser";
 import { useWorkspace } from "./WorkspaceProvider";
 
@@ -71,7 +72,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
     {!walletAdapter.publicKey ? <p>Connect Wallet to Burn!</p> :
       userAccount ? <BurnBonk onBurn={() => setUpdateTable(!updateTable)} /> :
         <NewUser onInit={() => setUpdateTable(!updateTable)} />}
-
+    <Loading show={loadingTable} text={'finding top bonkers'}/>
     {burnScores && <table>
       <thead>
         <tr>

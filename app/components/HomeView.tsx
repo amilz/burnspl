@@ -10,8 +10,6 @@ import Image from "next/image";
 import { BONK_MINT } from '../utils/constants'
 import { PublicKey } from '@solana/web3.js'
 import TotalBonkBurned from './TotalBonkBurned'
-import { toast } from "react-toastify";
-
 
 export const HomeView: FC = ({ }) => {
     const [solBalance, setSolBalance] = useState<number>(0);
