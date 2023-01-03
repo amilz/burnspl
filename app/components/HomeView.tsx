@@ -1,18 +1,12 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import Head from 'next/head'
 import { FC, useEffect, useState } from 'react'
-import Template from '../components/ClickTemplate'
 import styles from '../styles/Home.module.css'
-import { getSolBalance, getBonkBalance } from '../utils/solana'
+import { getBonkBalance } from '../utils/solana'
 import BurnTable from './BurnTable'
-import Footer from './Footer'
 import NavBar from './NavBar'
-import WalletBalances from './WalletBalances'
 import BonkLogo from '../public/bonklogo.webp';
 import Image from "next/image";
-import { Modal } from './Modal/Modal'
-import { HeaderText } from './Modal/modal.style'
 import { BONK_MINT } from '../utils/constants'
 import { PublicKey } from '@solana/web3.js'
 
