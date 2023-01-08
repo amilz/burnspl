@@ -75,6 +75,6 @@ export const shortWallet = (pubkey: PublicKey): string => {
 
 export const calcTotalBurn = (burns: BurnScoreWithPda[]): number => {
   let result = 0;
-  burns.forEach(burn=>result+=burn.account.burnedTokens);
+  result = burns.reduce((partialSum, a) => partialSum + a.account.burnedTokens, 0)
   return result;
 }

@@ -48,7 +48,7 @@ export const HomeView: FC = ({ }) => {
                 <NavBar tokenBalance={bonkBalance} tokenSymbol={'BONK'} />
                 <Image src={BonkLogo} className='on-top' height={200} alt="Bonk" />
                 <TotalBonkBurned bonkBurned={totalBurn} />
-                <BurnTable mint={new PublicKey(BONK_MINT)} updateTotalBurn={(amt) => { setTotalBurn(amt | 0) }} />
+                <BurnTable mint={new PublicKey(BONK_MINT)} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
                 {/* <Init onInit={()=>{console.log('on init')}} />  */}
             </main>
             {/* <Footer /> */}
