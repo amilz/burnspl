@@ -17,7 +17,10 @@ const NavBar: FC<NavBarProps> = (props: NavBarProps) => {
                 </p>
       </div>
       <div id="navbar">
-       {props.tokenBalance && <><br /><div className='token-balance'>Balance: {props.tokenBalance} {props.tokenSymbol}</div></>}
+       {(props.tokenBalance && (props.tokenBalance > 0)) ? 
+       <><br /><div className='token-balance'>Balance: {props.tokenBalance.toLocaleString(undefined,{maximumFractionDigits:0})} {props.tokenSymbol}</div></>
+       : <></>
+       }
         <div className="the-wallet-adapter"><WalletMultiButton className={styles["wallet-adapter-button-trigger"]} /></div>
       </div>
     </>
