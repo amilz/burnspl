@@ -1,6 +1,5 @@
-import { Cluster, Connection, LAMPORTS_PER_SOL, PublicKey, GetProgramAccountsFilter } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { BONK_MINT } from "./constants";
+import { Cluster, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
+import { BONK_MINT } from './constants'
 import { BurnScoreWithPda } from "./idl";
 
 export function generateExplorerUrl(txId:string, cluster: Cluster = 'devnet', address?: string){
@@ -31,41 +30,16 @@ export interface TokenAccounts {
 }
 
 export async function getBonkBalance(wallet: string, solanaConnection: Connection) {
-    const filters:GetProgramAccountsFilter[] = [
-        {
-          dataSize: 165,    //size of account (bytes)
-        },
-        {
-          memcmp: {
-            offset: 32,     //location of our query in the account (bytes)
-            bytes: wallet,  //our search criteria, a base58 encoded string
-          },            
-        }];
-    const accounts = await solanaConnection.getParsedProgramAccounts(
-        TOKEN_PROGRAM_ID, //new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
-        {filters: filters}
-    );
-    console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
-    const tokenSummary: TokenAccounts[] = accounts.map((account,i)=>{
-        const parsedAccountInfo:any = account.account.data;
-        const mintAddress:string = parsedAccountInfo["parsed"]["info"]["mint"];
-        const quantity: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
-        return {
-            mintAddress,
-            quantity
-        }
-    });
-    const wlBalance = findBonkAccount(tokenSummary);
-    console.log(wlBalance);
-    return wlBalance;
-}
+  const tokenAccounts = await solanaConnection.getTokenAccountsByOwner(
+    new PublicKey(wallet),
+    {mint: BONK_MINT},
+  )
+  const balances = await Promise.all(tokenAccounts.value.map(async ({pubkey}) => {
+    const balance = await solanaConnection.getTokenAccountBalance(pubkey)
+    return balance.value.uiAmount ?? 0
+  }))
 
-export const findBonkAccount = (holderTokens: TokenAccounts[]):number => {
-  const bonkAccount = holderTokens.find(tokenAccount=>{
-    return tokenAccount.mintAddress === BONK_MINT.toString();
-  })
-  if (!bonkAccount) return 0;
-  return bonkAccount.quantity;
+  return balances.reduce((acc, curr) => acc + curr, 0)
 }
 
 export const shortWallet = (pubkey: PublicKey): string => {
