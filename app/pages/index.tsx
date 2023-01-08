@@ -1,7 +1,6 @@
-import { HomeView } from '../components/HomeView'
 
 export default function Home() {
   return (
-    <HomeView/>
+    <div>search coming soon</div>
   )
 }

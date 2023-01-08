@@ -1,5 +1,5 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Transaction } from "@solana/web3.js";
+import { PublicKey, Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import { TOKEN_CONFIG } from "../utils/constants";
 import { createBurnIx } from "../utils/instructions";
@@ -9,6 +9,7 @@ import { useWorkspace } from "./WorkspaceProvider";
 
 interface BurnTokenProps {
   onBurn: () => void,
+  mint: PublicKey
 }
 
 const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
@@ -42,7 +43,7 @@ const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
       let txInstructions = await createBurnIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        TOKEN_CONFIG.mint,
+        props.mint,
         amount
       );
       transaction.add(txInstructions);

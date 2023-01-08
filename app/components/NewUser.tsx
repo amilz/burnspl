@@ -1,5 +1,5 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Transaction } from "@solana/web3.js";
+import { PublicKey, Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import { TOKEN_CONFIG } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
@@ -9,6 +9,7 @@ import Loading from "./Loading";
 
 interface NewUserProps {
   onInit: () => void,
+  mint: PublicKey
 }
 
 const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
@@ -47,7 +48,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
       let txInstructions = await createInitBurnAccountIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        TOKEN_CONFIG.mint,
+        props.mint,
         userName
       );
       transaction.add(txInstructions);

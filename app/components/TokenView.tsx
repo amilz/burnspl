@@ -11,7 +11,11 @@ import { TOKEN_CONFIG } from '../utils/constants';
 import { PublicKey } from '@solana/web3.js';
 import TotalTokensBurned from './TotalTokensBurned';
 
-export const HomeView: FC = ({ }) => {
+interface TokenViewProps {
+    mint: PublicKey
+}
+
+export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
     const [solBalance, setSolBalance] = useState<number>(0);
     const [tokenBalance, setTokenBalance] = useState<number>(0);
     const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
@@ -27,7 +31,7 @@ export const HomeView: FC = ({ }) => {
         };
         (async () => {
             try {
-                let tokenBalance = await getTokenBalance(publicKey, connection, TOKEN_CONFIG.mint);
+                let tokenBalance = await getTokenBalance(publicKey, connection, props.mint);
                 setTokenBalance(tokenBalance);
             } catch (err) {
                 console.log(err);
@@ -51,7 +55,7 @@ export const HomeView: FC = ({ }) => {
                 <NavBar tokenBalance={tokenBalance} tokenSymbol={TOKEN_CONFIG.symbol} />
                 <Image src={Logo} className='on-top' height={200} alt={TOKEN_CONFIG.name} />
                 <TotalTokensBurned tokensBurned={totalBurn} />
-                <BurnTable mint={new PublicKey(TOKEN_CONFIG.mint)} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
+                <BurnTable mint={props.mint} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
                 {/* <Init onInit={()=>{console.log('on init')}} />  */}
             </main>
             {/* <Footer /> */}

@@ -7,5 +7,5 @@ const nextConfig = {
 module.exports = {
   ...nextConfig,
   env: {
-    REACT_APP_SOLANA_RPC_HOST: process.env.REACT_APP_SOLANA_RPC_HOST,
+    NEXT_PUBLIC_RPC: process.env.NEXT_PUBLIC_RPC,
   }}
