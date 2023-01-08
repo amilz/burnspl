@@ -1,8 +1,7 @@
 import { FC } from "react"
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
-import styles from "../styles/Home.module.css"
-import WalletBalances from "./WalletBalances"
 import { TOKEN_CONFIG } from "../utils/constants"
+import styles from "../styles/Home.module.css"
 
 interface NavBarProps {
   tokenBalance?: number,

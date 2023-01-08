@@ -1,4 +1,4 @@
-import { clusterApiUrl, PublicKey } from "@solana/web3.js"
+import { PublicKey } from "@solana/web3.js"
 
 export const PROGRAM_ID = new PublicKey('FiRESpaNzgYUiba5vkb44CZJLZjrux1AUECdfwPRsNkg');
 export const SOLANA_RPC: string = process.env.REACT_APP_SOLANA_RPC_HOST as string;

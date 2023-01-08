@@ -1,7 +1,6 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
-import styles from "../styles/Home.module.css"
 import { TOKEN_CONFIG } from "../utils/constants";
 import { createBurnIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";

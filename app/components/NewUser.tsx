@@ -1,13 +1,11 @@
-import { createAccount } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
-import styles from "../styles/Home.module.css"
 import { TOKEN_CONFIG } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
-import Loading from "./Loading";
 import { useWorkspace } from "./WorkspaceProvider";
+import Loading from "./Loading";
 
 interface NewUserProps {
   onInit: () => void,

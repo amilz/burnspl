@@ -1,16 +1,14 @@
-import { createAccount } from "@solana/spl-token";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey, Transaction } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { FC, useEffect, useMemo, useState } from "react"
-import styles from "../styles/Home.module.css"
 import { TOKEN_CONFIG } from "../utils/constants";
-import { BurnScore, BurnScoreWithPda } from "../utils/idl";
-import { createInitBurnAccountIx, fetchBurnAcctsByToken } from "../utils/instructions";
-import { calcTotalBurn, generateExplorerUrl, shortWallet } from "../utils/solana";
+import { BurnScoreWithPda } from "../utils/idl";
+import { fetchBurnAcctsByToken } from "../utils/instructions";
+import { calcTotalBurn, shortWallet } from "../utils/solana";
+import { useWorkspace } from "./WorkspaceProvider";
 import BurnToken from "./BurnToken";
 import Loading from "./Loading";
 import NewUser from "./NewUser";
-import { useWorkspace } from "./WorkspaceProvider";
 
 interface BurnTableProps {
   updateTotalBurn: (amt:number)=>void,
