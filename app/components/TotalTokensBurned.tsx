@@ -1,15 +1,17 @@
 import { FC } from "react"
+import { MintWithMetadata } from "../utils/metaplex"
 import styles from "../styles/Home.module.css"
-import { TOKEN_CONFIG } from "../utils/constants"
 
 interface TotalTokensBurnedProps {
-  tokensBurned: number
+  tokensBurned: number,
+  tokenData: MintWithMetadata
 }
 
 const TotalTokensBurned: FC<TotalTokensBurnedProps> = (props:TotalTokensBurnedProps) => {
   return (
+    // TO DO ADD MARGIN IF NO IMAGE (word TOTAL getting cut off)
     <p className={styles.center}>
-      TOTAL {TOKEN_CONFIG.symbol} BURNED:<span className='token-amt'>{props.tokensBurned.toLocaleString(undefined,{maximumFractionDigits:0})}</span> 
+      TOTAL {props.tokenData.symbol} BURNED:<span className='token-amt'>{props.tokensBurned.toLocaleString(undefined,{maximumFractionDigits:0})}</span> 
     </p>
   )
 }

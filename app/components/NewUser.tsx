@@ -1,15 +1,15 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey, Transaction } from "@solana/web3.js";
+import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
-import { TOKEN_CONFIG } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import { useWorkspace } from "./WorkspaceProvider";
+import { MintWithMetadata } from "../utils/metaplex";
 import Loading from "./Loading";
 
 interface NewUserProps {
   onInit: () => void,
-  mint: PublicKey
+  tokenData: MintWithMetadata
 }
 
 const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
@@ -48,7 +48,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
       let txInstructions = await createInitBurnAccountIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        props.mint,
+        props.tokenData.mint,
         userName
       );
       transaction.add(txInstructions);
@@ -77,11 +77,11 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
 
   }
   return (
-    loading ? <Loading show={true} text={`New ${TOKEN_CONFIG.symbol}er in Progress`}/>:
+    loading ? <Loading show={true} text={`New ${props.tokenData.symbol}er in Progress`}/>:
     <form onSubmit={handleCreateAccount}>
       <div className="buttonHolder">
 
-          <button type="submit">Join the {TOKEN_CONFIG.name} Fire</button><br/>
+          <button type="submit">Join the {props.tokenData.name} Fire</button><br/>
 
     <label>
       Username  <small>(optional) </small></label><br/>

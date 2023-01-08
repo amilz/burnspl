@@ -1,7 +1,6 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey } from "@solana/web3.js";
+import { MintWithMetadata } from "../utils/metaplex";
 import { FC, useEffect, useMemo, useState } from "react"
-import { TOKEN_CONFIG } from "../utils/constants";
 import { BurnScoreWithPda } from "../utils/idl";
 import { fetchBurnAcctsByToken } from "../utils/instructions";
 import { calcTotalBurn, shortWallet } from "../utils/solana";
@@ -12,7 +11,7 @@ import NewUser from "./NewUser";
 
 interface BurnTableProps {
   updateTotalBurn: (amt:number)=>void,
-  mint: PublicKey,
+  tokenData: MintWithMetadata,
   maxRows?: number
 }
 
@@ -32,7 +31,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
     setLoadingTable(true);
     (async () => {
       try {
-        let burnScores = await fetchBurnAcctsByToken(burnBoardProgram, props.mint);
+        let burnScores = await fetchBurnAcctsByToken(burnBoardProgram, props.tokenData.mint);
         let cleanedScores: BurnScoreWithPda[] = burnScores.map(entry => {
           let { account } = entry;
           return {
@@ -70,9 +69,9 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
 
   return (<>
     {!walletAdapter.publicKey ? <p>Connect Wallet to Burn!</p> :
-      userAccount ? <BurnToken onBurn={() => setUpdateTable(!updateTable)} /> :
-        <NewUser onInit={() => setUpdateTable(!updateTable)} />}
-    <Loading show={loadingTable} text={`Finding top ${TOKEN_CONFIG.name}ers`}/>
+      userAccount ? <BurnToken tokenData={props.tokenData} onBurn={() => setUpdateTable(!updateTable)} /> :
+        <NewUser tokenData={props.tokenData}  onInit={() => setUpdateTable(!updateTable)} />}
+    <Loading show={loadingTable} text={`Finding top ${props.tokenData.name}ers`}/>
     {burnScores && <table>
       <thead>
         <tr>

@@ -1,6 +1,5 @@
 import { FC } from "react"
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
-import { TOKEN_CONFIG } from "../utils/constants"
 import styles from "../styles/Home.module.css"
 
 interface NavBarProps {
@@ -11,9 +10,9 @@ interface NavBarProps {
 const NavBar: FC<NavBarProps> = (props: NavBarProps) => {
   return (
     <>
-      <div id="nav-title">The {TOKEN_CONFIG.name} Fire
+      <div id="nav-title">The {props.tokenSymbol} Fire
         <p className={styles.description}>
-          Burn ${TOKEN_CONFIG.symbol} to join the ranks!
+          Burn ${props.tokenSymbol} to join the ranks!
         </p>
       </div>
       <div id="navbar">

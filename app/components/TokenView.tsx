@@ -7,12 +7,11 @@ import BurnTable from './BurnTable'
 import NavBar from './NavBar'
 import Logo from '../public/bonklogo.webp';
 import Image from "next/image";
-import { TOKEN_CONFIG } from '../utils/constants';
-import { PublicKey } from '@solana/web3.js';
 import TotalTokensBurned from './TotalTokensBurned';
+import { MintWithMetadata } from '../utils/metaplex'
 
 interface TokenViewProps {
-    mint: PublicKey
+    tokenData: MintWithMetadata
 }
 
 export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
@@ -31,7 +30,7 @@ export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
         };
         (async () => {
             try {
-                let tokenBalance = await getTokenBalance(publicKey, connection, props.mint);
+                let tokenBalance = await getTokenBalance(publicKey, connection, props.tokenData.mint);
                 setTokenBalance(tokenBalance);
             } catch (err) {
                 console.log(err);
@@ -52,11 +51,10 @@ export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
                 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
             </Head>
             <main className={styles.main}>
-                <NavBar tokenBalance={tokenBalance} tokenSymbol={TOKEN_CONFIG.symbol} />
-                <Image src={Logo} className='on-top' height={200} alt={TOKEN_CONFIG.name} />
-                <TotalTokensBurned tokensBurned={totalBurn} />
-                <BurnTable mint={props.mint} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
-                {/* <Init onInit={()=>{console.log('on init')}} />  */}
+                <NavBar tokenBalance={tokenBalance} tokenSymbol={props.tokenData.symbol} />
+                {props.tokenData.img ? <Image src={props.tokenData.img} className='on-top' style={{borderRadius: '50%'}} height={200} width={200} alt={props.tokenData.name || props.tokenData.mint.toBase58()} /> : <></>}
+                <TotalTokensBurned tokenData={props.tokenData} tokensBurned={totalBurn} />
+                <BurnTable tokenData={props.tokenData} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
             </main>
             {/* <Footer /> */}
         </div>

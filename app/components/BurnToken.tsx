@@ -1,15 +1,15 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { PublicKey, Transaction } from "@solana/web3.js";
+import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
-import { TOKEN_CONFIG } from "../utils/constants";
 import { createBurnIx } from "../utils/instructions";
+import { MintWithMetadata } from "../utils/metaplex";
 import { generateExplorerUrl } from "../utils/solana";
-import Loading from "./Loading";
 import { useWorkspace } from "./WorkspaceProvider";
+import Loading from "./Loading";
 
 interface BurnTokenProps {
   onBurn: () => void,
-  mint: PublicKey
+  tokenData: MintWithMetadata
 }
 
 const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
@@ -43,7 +43,7 @@ const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
       let txInstructions = await createBurnIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        props.mint,
+        props.tokenData.mint,
         amount
       );
       transaction.add(txInstructions);
@@ -72,10 +72,10 @@ const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
 
   }
   return (
-    loading ? <Loading show={true} text={`BURNING ${TOKEN_CONFIG.symbol}`}/>:
+    loading ? <Loading show={true} text={`BURNING ${props.tokenData.symbol}`}/>:
     <form onSubmit={handleBurn}>
     <label>
-      How much ${TOKEN_CONFIG.symbol} to burn? &nbsp;
+      How much ${props.tokenData.symbol} to burn? &nbsp;
       <input
         name="burnAmount"
         required
