@@ -54,25 +54,26 @@ export const calcTotalBurn = (burns: BurnScoreWithPda[]): number => {
   return result;
 }
 
-export const isPubKey = (text: string): boolean => {
+export const tryGetPubKey = (text: string): PublicKey | null => {
   try {
-    let pk = new PublicKey(text);
-    return true;
+    return new PublicKey(text);
   }
   catch {
-    return false;
+    return null;
   }
 }
 
-export const isTokenMint = (accountInfo: Uint8Array, solanaConnection: Connection,): boolean => {
+export const tryParseTokenMint = (accountInfo: Uint8Array, solanaConnection: Connection,): RawMint | null => {
   try {
-    const rawMint = MintLayout.decode(accountInfo);
-    return true;
+    return MintLayout.decode(accountInfo);
   }
   catch {
-    return false;
+    return null;
   }
 }
+
+// Mint Struct Info: 
+// https://github.com/solana-labs/solana-program-library/blob/48fbb5b7c49ea35848442bba470b89331dea2b2b/token/js/src/state/mint.ts
 
 /** Mint as stored by the program */
 export interface RawMint {
@@ -84,6 +85,7 @@ export interface RawMint {
   freezeAuthorityOption: 1 | 0;
   freezeAuthority: PublicKey;
 }
+
 
 /** Buffer layout for de/serializing a mint */
 export const MintLayout = struct<RawMint>([

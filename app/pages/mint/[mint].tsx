@@ -3,7 +3,7 @@ import { PublicKey } from '@solana/web3.js';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { TokenView } from '../../components/TokenView';
-import { isPubKey, isTokenMint } from '../../utils/solana';
+import { tryGetPubKey, tryParseTokenMint } from '../../utils/solana';
 
 export default function Home() {
     const [mint, setMint] = useState<PublicKey>();
@@ -16,12 +16,13 @@ export default function Home() {
             const { mint } = router.query;
             let searchValue = Array.isArray(mint) ? mint[0] : mint;
             if (!searchValue) return;
-            if (!isPubKey(searchValue)) return;
-            const searchKey = new PublicKey(searchValue);
+            const searchKey = tryGetPubKey(searchValue);
+            if (!searchKey) return;
             const info = await connection.getAccountInfo(searchKey);
             if (!info || !info.data) return;
-            const isMint = await isTokenMint(info.data, connection);
-            if (isMint) setMint(searchKey);
+            const tokenMintData = await tryParseTokenMint(info.data, connection);
+            if (tokenMintData) setMint(searchKey);
+            // POTENTIAL TO DO: migrate some/all of this logic to a useAccountInfo hook
         })();
     }, [router.isReady]);
 
