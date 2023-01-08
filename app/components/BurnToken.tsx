@@ -1,18 +1,17 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
-import styles from "../styles/Home.module.css"
-import { BONK_MINT } from "../utils/constants";
+import { TOKEN_CONFIG } from "../utils/constants";
 import { createBurnIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import Loading from "./Loading";
 import { useWorkspace } from "./WorkspaceProvider";
 
-interface BurnBonkProps {
+interface BurnTokenProps {
   onBurn: () => void,
 }
 
-const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
+const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
   const [burnAmount, setBurnAmount] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -43,7 +42,7 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
       let txInstructions = await createBurnIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        BONK_MINT,
+        TOKEN_CONFIG.mint,
         amount
       );
       transaction.add(txInstructions);
@@ -72,10 +71,10 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
 
   }
   return (
-    loading ? <Loading show={true} text={'BURNING BONK'}/>:
+    loading ? <Loading show={true} text={`BURNING ${TOKEN_CONFIG.symbol}`}/>:
     <form onSubmit={handleBurn}>
     <label>
-      How much $BONK to burn? &nbsp;
+      How much ${TOKEN_CONFIG.symbol} to burn? &nbsp;
       <input
         name="burnAmount"
         required
@@ -91,5 +90,5 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
   )
 }
 
-export default BurnBonk;
+export default BurnToken;
 
