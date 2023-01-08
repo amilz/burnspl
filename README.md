@@ -1,28 +1,29 @@
-# bonk burn
+Work in Progress. 
 
-- `/program` - Solana Program Source and IDL
+# BURN SPL (Mainnet)
+
+- `/program` - Solana Program Source and IDL (ProgramId: `FiRESpaNzgYUiba5vkb44CZJLZjrux1AUECdfwPRsNkg`)
 - `/app` - Front end deployment using NextJS
 
 Though BonkBurn is bonk focused, the program, is generic. Burn accts are seeded by `wallet` and `mint` so a user can have many token burn accounts. This front end will filter high scores only for desired tokens and facilitate burns just for that token. 
 
 PRs, issues, feedback welcome. Thanks! 🙏
 
-### Key Variables: 
-- Cluster: `mainnet-beta`
-- ProgramId: `FiRESpaNzgYUiba5vkb44CZJLZjrux1AUECdfwPRsNkg`
-- BonkMint: `DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263` 
-
 
 ## Getting Started (Front End)
 
-```bash
+```sh
+cd app
+```
+
+```sh
 npm install
 #or
 yarn
 ```
 
 Create`.env`. 
-Add `NEXT_PUBLIC_RPC`with your RPC or the public: `https://api.devnet.solana.com` 
+Add `NEXT_PUBLIC_RPC`with your RPC (free ones available at [QuickNode](https://www.quicknode.com/))
 Update `app\utils\constants.ts` as necessary:
 - Make sure reference to `.env` is correct in `SOLANA_RPC`
 - Update `TOKEN_CONFIG` to reflect your token of choice
