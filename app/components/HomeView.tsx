@@ -2,7 +2,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import Head from 'next/head'
 import { FC, useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
-import { getBonkBalance } from '../utils/solana'
+import { getTokenBalance } from '../utils/solana'
 import BurnTable from './BurnTable'
 import NavBar from './NavBar'
 import BonkLogo from '../public/bonklogo.webp';
@@ -27,7 +27,7 @@ export const HomeView: FC = ({ }) => {
         };
         (async () => {
             try {
-                let bonkBalance = await getBonkBalance(publicKey.toString(), connection);
+                let bonkBalance = await getTokenBalance(publicKey, connection, TOKEN_MINT);
                 setBonkBalance(bonkBalance);
             } catch (err) {
                 console.log(err);

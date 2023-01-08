@@ -1,5 +1,4 @@
 import { Cluster, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
-import { TOKEN_MINT } from './constants'
 import { BurnScoreWithPda } from "./idl";
 
 export function generateExplorerUrl(txId:string, cluster: Cluster = 'devnet', address?: string){
@@ -29,10 +28,10 @@ export interface TokenAccounts {
     quantity: number
 }
 
-export async function getBonkBalance(wallet: string, solanaConnection: Connection) {
+export async function getTokenBalance(wallet: PublicKey, solanaConnection: Connection, tokenMint: PublicKey) {
   const tokenAccounts = await solanaConnection.getTokenAccountsByOwner(
-    new PublicKey(wallet),
-    {mint: TOKEN_MINT},
+    wallet,
+    {mint: tokenMint},
   )
   const balances = await Promise.all(tokenAccounts.value.map(async ({pubkey}) => {
     const balance = await solanaConnection.getTokenAccountBalance(pubkey)
