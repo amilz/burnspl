@@ -62,7 +62,7 @@ export async function fetchBurnAcctsByToken(
     ) {
     const allBurnAccts = await burnBoardProgram.account.burnScore.all();
     if (!mint) return allBurnAccts;
-    return allBurnAccts.filter(acct=> acct.account.mint === mint);
+    return allBurnAccts.filter(acct=> acct.account.mint.toBase58() == mint.toBase58());
 }
   
 

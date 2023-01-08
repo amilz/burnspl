@@ -13,7 +13,7 @@ import { useWorkspace } from "./WorkspaceProvider";
 
 interface BurnTableProps {
   updateTotalBurn: (amt:number)=>void,
-  mint?: PublicKey,
+  mint: PublicKey,
   maxRows?: number
 }
 
@@ -33,7 +33,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
     setLoadingTable(true);
     (async () => {
       try {
-        let burnScores = await fetchBurnAcctsByToken(burnBoardProgram);
+        let burnScores = await fetchBurnAcctsByToken(burnBoardProgram, props.mint);
         let cleanedScores: BurnScoreWithPda[] = burnScores.map(entry => {
           let { account } = entry;
           return {

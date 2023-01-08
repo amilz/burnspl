@@ -8,3 +8,4 @@ test-ledger
 programs/program.json
 programs/devnet.json
 programs/creator.json
+programs/*.zip
