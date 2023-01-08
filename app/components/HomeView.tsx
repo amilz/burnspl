@@ -17,11 +17,14 @@ export const HomeView: FC = ({ }) => {
     const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
     const [refreshBonk, refreshBonkTrigger] = useState<boolean>(false);
     const [totalBurn, setTotalBurn] = useState<number>(0);
-    const { publicKey, connected } = useWallet();
+    const { publicKey } = useWallet();
     const { connection } = useConnection();
 
     useEffect(() => {
-        if (!publicKey) return;
+        if (!publicKey) {
+            setBonkBalance(0); // if user disconnects wallet, reset a 0 balance
+            return;
+        };
         (async () => {
             try {
                 let bonkBalance = await getBonkBalance(publicKey.toString(), connection);
@@ -38,10 +41,10 @@ export const HomeView: FC = ({ }) => {
                 <title>The Bonk Fire</title>
                 <meta name="description" content="Track BONK Burns" />
                 <link rel="icon" href="/favicon.ico" />
-                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-                <link rel="manifest" href="/site.webmanifest"/>
+                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+                <link rel="manifest" href="/site.webmanifest" />
                 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
             </Head>
             <main className={styles.main}>
