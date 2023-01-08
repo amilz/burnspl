@@ -3,7 +3,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import styles from "../styles/Home.module.css"
-import { TOKEN_MINT } from "../utils/constants";
+import { TOKEN_CONFIG } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import Loading from "./Loading";
@@ -49,7 +49,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
       let txInstructions = await createInitBurnAccountIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        TOKEN_MINT,
+        TOKEN_CONFIG.mint,
         userName
       );
       transaction.add(txInstructions);
@@ -78,11 +78,11 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
 
   }
   return (
-    loading ? <Loading show={true} text={'New BONKer in Progress'}/>:
+    loading ? <Loading show={true} text={`New ${TOKEN_CONFIG.symbol}er in Progress`}/>:
     <form onSubmit={handleCreateAccount}>
       <div className="buttonHolder">
 
-          <button type="submit">Join the Bonk Fire</button><br/>
+          <button type="submit">Join the {TOKEN_CONFIG.name} Fire</button><br/>
 
     <label>
       Username  <small>(optional) </small></label><br/>

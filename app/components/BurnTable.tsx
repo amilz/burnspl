@@ -3,6 +3,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { FC, useEffect, useMemo, useState } from "react"
 import styles from "../styles/Home.module.css"
+import { TOKEN_CONFIG } from "../utils/constants";
 import { BurnScore, BurnScoreWithPda } from "../utils/idl";
 import { createInitBurnAccountIx, fetchBurnAcctsByToken } from "../utils/instructions";
 import { calcTotalBurn, generateExplorerUrl, shortWallet } from "../utils/solana";
@@ -73,7 +74,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
     {!walletAdapter.publicKey ? <p>Connect Wallet to Burn!</p> :
       userAccount ? <BurnBonk onBurn={() => setUpdateTable(!updateTable)} /> :
         <NewUser onInit={() => setUpdateTable(!updateTable)} />}
-    <Loading show={loadingTable} text={'finding top bonkers'}/>
+    <Loading show={loadingTable} text={`Finding top ${TOKEN_CONFIG.name}ers`}/>
     {burnScores && <table>
       <thead>
         <tr>
