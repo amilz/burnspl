@@ -7,7 +7,7 @@ import { TOKEN_CONFIG } from "../utils/constants";
 import { BurnScore, BurnScoreWithPda } from "../utils/idl";
 import { createInitBurnAccountIx, fetchBurnAcctsByToken } from "../utils/instructions";
 import { calcTotalBurn, generateExplorerUrl, shortWallet } from "../utils/solana";
-import BurnBonk from "./BurnBonk";
+import BurnToken from "./BurnToken";
 import Loading from "./Loading";
 import NewUser from "./NewUser";
 import { useWorkspace } from "./WorkspaceProvider";
@@ -72,7 +72,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
 
   return (<>
     {!walletAdapter.publicKey ? <p>Connect Wallet to Burn!</p> :
-      userAccount ? <BurnBonk onBurn={() => setUpdateTable(!updateTable)} /> :
+      userAccount ? <BurnToken onBurn={() => setUpdateTable(!updateTable)} /> :
         <NewUser onInit={() => setUpdateTable(!updateTable)} />}
     <Loading show={loadingTable} text={`Finding top ${TOKEN_CONFIG.name}ers`}/>
     {burnScores && <table>

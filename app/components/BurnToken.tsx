@@ -8,11 +8,11 @@ import { generateExplorerUrl } from "../utils/solana";
 import Loading from "./Loading";
 import { useWorkspace } from "./WorkspaceProvider";
 
-interface BurnBonkProps {
+interface BurnTokenProps {
   onBurn: () => void,
 }
 
-const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
+const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
   const [burnAmount, setBurnAmount] = useState(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -91,5 +91,5 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
   )
 }
 
-export default BurnBonk;
+export default BurnToken;
 

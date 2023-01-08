@@ -5,35 +5,35 @@ import styles from '../styles/Home.module.css'
 import { getTokenBalance } from '../utils/solana'
 import BurnTable from './BurnTable'
 import NavBar from './NavBar'
-import BonkLogo from '../public/bonklogo.webp';
+import Logo from '../public/bonklogo.webp';
 import Image from "next/image";
-import { TOKEN_CONFIG } from '../utils/constants'
-import { PublicKey } from '@solana/web3.js'
-import TotalBonkBurned from './TotalBonkBurned'
+import { TOKEN_CONFIG } from '../utils/constants';
+import { PublicKey } from '@solana/web3.js';
+import TotalTokensBurned from './TotalTokensBurned';
 
 export const HomeView: FC = ({ }) => {
     const [solBalance, setSolBalance] = useState<number>(0);
-    const [bonkBalance, setBonkBalance] = useState<number>(0);
+    const [tokenBalance, setTokenBalance] = useState<number>(0);
     const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
-    const [refreshBonk, refreshBonkTrigger] = useState<boolean>(false);
+    const [refreshToken, refreshTokenTrigger] = useState<boolean>(false);
     const [totalBurn, setTotalBurn] = useState<number>(0);
     const { publicKey } = useWallet();
     const { connection } = useConnection();
 
     useEffect(() => {
         if (!publicKey) {
-            setBonkBalance(0); // if user disconnects wallet, reset a 0 balance
+            setTokenBalance(0); // if user disconnects wallet, reset a 0 balance
             return;
         };
         (async () => {
             try {
-                let bonkBalance = await getTokenBalance(publicKey, connection, TOKEN_CONFIG.mint);
-                setBonkBalance(bonkBalance);
+                let tokenBalance = await getTokenBalance(publicKey, connection, TOKEN_CONFIG.mint);
+                setTokenBalance(tokenBalance);
             } catch (err) {
                 console.log(err);
             }
         })();
-    }, [publicKey, connection, refreshBonk])
+    }, [publicKey, connection, refreshToken])
 
     return (
         <div className={styles.container}>
@@ -48,9 +48,9 @@ export const HomeView: FC = ({ }) => {
                 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
             </Head>
             <main className={styles.main}>
-                <NavBar tokenBalance={bonkBalance} tokenSymbol={TOKEN_CONFIG.symbol} />
-                <Image src={BonkLogo} className='on-top' height={200} alt={TOKEN_CONFIG.name} />
-                <TotalBonkBurned bonkBurned={totalBurn} />
+                <NavBar tokenBalance={tokenBalance} tokenSymbol={TOKEN_CONFIG.symbol} />
+                <Image src={Logo} className='on-top' height={200} alt={TOKEN_CONFIG.name} />
+                <TotalTokensBurned tokensBurned={totalBurn} />
                 <BurnTable mint={new PublicKey(TOKEN_CONFIG.mint)} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
                 {/* <Init onInit={()=>{console.log('on init')}} />  */}
             </main>
