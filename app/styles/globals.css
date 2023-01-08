@@ -3,7 +3,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Press Start 2P", cursive;
-  background: #ff8103;
+  background: black;
   color: white;
   text-align: center;
 
@@ -19,7 +19,7 @@ a {
 }
 
 button {
-  background-color: #ff8103;
+  background-color: black;
   border-color: white;
   border-width: 3px;
   border-style: solid;
@@ -37,7 +37,7 @@ button {
 }
 button:hover {
   background-color: #e4e4e4;
-  color: #ff8103;
+  color: black;
 }
 
 input[type="text"],
@@ -45,7 +45,7 @@ input[type="number"] {
   width: 200px;
   padding: 12px 20px;
   margin: 8px 0;
-  color: #ff8103;
+  color: black;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
@@ -97,7 +97,7 @@ input[type="number"] {
   }
   #nav-title {
     position: absolute;
-    background: #ff8103;
+    background: black;
   }
 
   .token-balance {

@@ -18,7 +18,8 @@ export const tryGetTokenMetaData = async(solanaConnection: Connection, mintAddre
     catch {
         return result;
     }
-    // TO DO ADD A REGISTRY LOOKUP IF NO DATA FOUND
+    // TO DO ADD A REGISTRY LOOKUP IF NO DATA FOUND https://github.com/solana-labs/token-list
+    // https://docs.phantom.app/solana/best-practices/tokens/home-tab-fungibles
 }
 
 export interface MintWithMetadata {
