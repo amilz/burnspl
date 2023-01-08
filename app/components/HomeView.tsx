@@ -17,11 +17,14 @@ export const HomeView: FC = ({ }) => {
     const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
     const [refreshBonk, refreshBonkTrigger] = useState<boolean>(false);
     const [totalBurn, setTotalBurn] = useState<number>(0);
-    const { publicKey, connected } = useWallet();
+    const { publicKey } = useWallet();
     const { connection } = useConnection();
 
     useEffect(() => {
-        if (!publicKey) return;
+        if (!publicKey) {
+            setBonkBalance(0); // if user disconnects wallet, reset a 0 balance
+            return;
+        };
         (async () => {
             try {
                 let bonkBalance = await getBonkBalance(publicKey.toString(), connection);
