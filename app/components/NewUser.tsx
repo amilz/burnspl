@@ -3,7 +3,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import styles from "../styles/Home.module.css"
-import { BONK_MINT } from "../utils/constants";
+import { TOKEN_MINT } from "../utils/constants";
 import { createInitBurnAccountIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import Loading from "./Loading";
@@ -49,7 +49,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
       let txInstructions = await createInitBurnAccountIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        BONK_MINT,
+        TOKEN_MINT,
         userName
       );
       transaction.add(txInstructions);

@@ -7,7 +7,7 @@ import BurnTable from './BurnTable'
 import NavBar from './NavBar'
 import BonkLogo from '../public/bonklogo.webp';
 import Image from "next/image";
-import { BONK_MINT } from '../utils/constants'
+import { TOKEN_MINT } from '../utils/constants'
 import { PublicKey } from '@solana/web3.js'
 import TotalBonkBurned from './TotalBonkBurned'
 
@@ -51,7 +51,7 @@ export const HomeView: FC = ({ }) => {
                 <NavBar tokenBalance={bonkBalance} tokenSymbol={'BONK'} />
                 <Image src={BonkLogo} className='on-top' height={200} alt="Bonk" />
                 <TotalBonkBurned bonkBurned={totalBurn} />
-                <BurnTable mint={new PublicKey(BONK_MINT)} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
+                <BurnTable mint={new PublicKey(TOKEN_MINT)} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
                 {/* <Init onInit={()=>{console.log('on init')}} />  */}
             </main>
             {/* <Footer /> */}

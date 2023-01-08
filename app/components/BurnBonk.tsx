@@ -2,7 +2,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Transaction } from "@solana/web3.js";
 import { FC, useState } from "react"
 import styles from "../styles/Home.module.css"
-import { BONK_MINT } from "../utils/constants";
+import { TOKEN_MINT } from "../utils/constants";
 import { createBurnIx } from "../utils/instructions";
 import { generateExplorerUrl } from "../utils/solana";
 import Loading from "./Loading";
@@ -43,7 +43,7 @@ const BurnBonk: FC<BurnBonkProps> = (props:BurnBonkProps) => {
       let txInstructions = await createBurnIx(
         burnBoardProgram,
         walletAdapter.publicKey,
-        BONK_MINT,
+        TOKEN_MINT,
         amount
       );
       transaction.add(txInstructions);
