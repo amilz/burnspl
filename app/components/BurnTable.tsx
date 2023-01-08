@@ -49,7 +49,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
             }
           }
         });
-        cleanedScores = cleanedScores.sort(function (a, b) { return b.account.burnedTokens - a.account.burnedTokens });
+        cleanedScores = cleanedScores.sort(function (userA, userB) { return userB.account.burnedTokens - userA.account.burnedTokens });
         //cleanedScores = cleanedScores.flatMap(i => Array.from({ length: 5 }).fill(i)) as BurnScoreWithPda[];
         if (!cleanedScores) return;
         let tot = calcTotalBurn(cleanedScores);
@@ -66,7 +66,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
   }, [updateTable])
   useEffect(() => {
     if (!walletAdapter || !walletAdapter.publicKey || !burnScores) { setUserAccount(undefined) }
-    setUserAccount(burnScores.find(entry => { return walletAdapter?.publicKey?.toString() == entry.account.pyroKey.toString() }));
+    setUserAccount(burnScores.find(user => { return walletAdapter?.publicKey?.toString() == user.account.pyroKey.toString() }));
   }, [walletAdapter, burnScores, connection])
 
 
@@ -84,11 +84,11 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {burnScores.map((entry, i) => {
+        {burnScores.map((user, i) => {
           return <tr key={i}>
             <td>{i+1}</td>
-            <td>{entry.account.userName.length > 0 ? entry.account.userName: shortWallet(entry.account.pyroKey)}</td>
-            <td>{entry.account.burnedTokens.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
+            <td>{user.account.userName.length > 0 ? user.account.userName: shortWallet(user.account.pyroKey)}</td>
+            <td>{user.account.burnedTokens.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
           </tr>
         })}
       </tbody>
