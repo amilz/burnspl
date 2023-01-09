@@ -5,7 +5,6 @@ import styles from '../styles/Home.module.css'
 import { getTokenBalance } from '../utils/solana'
 import BurnTable from './BurnTable'
 import NavBar from './NavBar'
-import Logo from '../public/bonklogo.webp';
 import Image from "next/image";
 import TotalTokensBurned from './TotalTokensBurned';
 import { MintWithMetadata } from '../utils/metaplex'
@@ -15,9 +14,9 @@ interface TokenViewProps {
 }
 
 export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
-    const [solBalance, setSolBalance] = useState<number>(0);
+    //const [solBalance, setSolBalance] = useState<number>(0);
+    //const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
     const [tokenBalance, setTokenBalance] = useState<number>(0);
-    const [refreshSol, refreshSolTrigger] = useState<boolean>(false);
     const [refreshToken, refreshTokenTrigger] = useState<boolean>(false);
     const [totalBurn, setTotalBurn] = useState<number>(0);
     const { publicKey } = useWallet();
@@ -41,8 +40,8 @@ export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
     return (
         <div className={styles.container}>
             <Head>
-                <title>The Bonk Fire</title>
-                <meta name="description" content={`Track BONK Burns`} />
+                <title>Burn SPL</title>
+                <meta name="description" content={`Burn and track Solana SPL Tokens`} />
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
