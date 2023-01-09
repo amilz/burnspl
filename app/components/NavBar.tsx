@@ -10,9 +10,9 @@ interface NavBarProps {
 const NavBar: FC<NavBarProps> = (props: NavBarProps) => {
   return (
     <>
-      <div id="nav-title">The {props.tokenSymbol} Fire
+      <div id="nav-title">BURN SPL
         <p className={styles.description}>
-          Burn ${props.tokenSymbol} to join the ranks!
+          Burn {props.tokenSymbol ? ('$' + props.tokenSymbol) : 'tokens'} to join the ranks!
         </p>
       </div>
       <div id="navbar">

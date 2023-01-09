@@ -96,8 +96,10 @@ input[type="number"] {
     margin-bottom: 5px;
   }
   #nav-title {
+    margin-top: 15px;
     position: absolute;
     background: black;
+    text-align: left;
   }
 
   .token-balance {
@@ -139,4 +141,8 @@ input[type="number"] {
 
 form {
     display: inline-block;
+}
+
+.mid-notice {
+  margin-top: 30vh;
 }

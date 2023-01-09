@@ -31,6 +31,6 @@ export default function Home() {
     }, [router.isReady]);
 
     return (
-        tokenData ? <TokenView tokenData={tokenData}/> : <div>invalid mint</div>
+        tokenData ? <TokenView tokenData={tokenData}/> : <div className='mid-notice'>invalid mint</div>
     )
 }
