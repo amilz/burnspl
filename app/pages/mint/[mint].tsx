@@ -31,6 +31,8 @@ export default function Home() {
     }, [router.isReady]);
 
     return (
+        // TO DO ADD LOADING (rn just says invalid while loading)
+        // TO DO ADD More margin above body. (hitting the navbar rn)
         tokenData ? <TokenView tokenData={tokenData}/> : <div className='mid-notice'>invalid mint</div>
     )
 }
