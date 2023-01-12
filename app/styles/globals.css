@@ -90,6 +90,10 @@ input[type="number"] {
   td {
     border: 3px solid;
   }
+  th{
+    background-color: rgba(0, 0, 0, 0.16);
+  }
+
 
   /* NAVBAR */
 
