@@ -1,6 +1,7 @@
-import { FC } from "react"
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
-import styles from "../styles/Home.module.css"
+import { FC } from "react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import styles from "../styles/Home.module.css";
+import Link from 'next/link';
 
 interface NavBarProps {
   tokenBalance?: number,
@@ -10,7 +11,7 @@ interface NavBarProps {
 const NavBar: FC<NavBarProps> = (props: NavBarProps) => {
   return (
     <>
-      <div id="nav-title">BURN SPL
+      <div id="nav-title"><Link href="/">BURN SPL</Link>
         <p className={styles.description}>
           Burn {props.tokenSymbol ? ('$' + props.tokenSymbol) : 'tokens'} to join the ranks!
         </p>
