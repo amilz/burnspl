@@ -54,6 +54,7 @@ input[type="number"] {
 
 #search-bar {
   width: 700px;
+  text-align: center;
 }
 
 /* Hide spinners Chrome, Safari, Edge, Opera */
@@ -149,4 +150,9 @@ form {
 
 .mid-notice {
   margin-top: 30vh;
+}
+
+.search-result {
+  padding: 3px;
+
 }

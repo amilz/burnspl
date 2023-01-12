@@ -45,7 +45,7 @@ const Search: FC = () => {
         <div className="buttonHolder">
           <br />
           <label>
-            Search Mint Address</label><br />
+            Search Mint Address:</label><br /><br/>
           <input
             name="mintAddress"
             id="search-bar"
@@ -53,8 +53,9 @@ const Search: FC = () => {
             maxLength={44}
             value={searchAddress}
             onChange={(e) => onValueChange(e)} /><br/>
+            <br/>
             {error && <div className="search-error">{error}</div>}
-            {(isValid && foundKey) && <div className="search-result"><Link href={`/mint/${foundKey.toBase58()}`}>Go burn some {shortWallet(foundKey)} 🔥🔥🔥</Link></div>}
+            {(isValid && foundKey) && <div className="search-result"><Link href={`/mint/${foundKey.toBase58()}`}>👉 Go burn some {shortWallet(foundKey)} 🔥🔥🔥</Link></div>}
         </div>
       </form>
   )
