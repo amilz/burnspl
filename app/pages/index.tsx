@@ -3,6 +3,7 @@ import Search from "../components/Search";
 import styles from "../styles/Home.module.css"
 
 export default function Home() {
+  document.body.style.backgroundColor = "black";
   return (
     <div className={styles.container}>
       <main className={styles.main}>

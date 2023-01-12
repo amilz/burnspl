@@ -103,7 +103,7 @@ input[type="number"] {
   #nav-title {
     margin-top: 15px;
     position: absolute;
-    background: black;
+    background: transparent;
     text-align: left;
   }
 

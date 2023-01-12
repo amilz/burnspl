@@ -21,6 +21,9 @@ export default function Home() {
             const { mint } = router.query;
             let searchValue = Array.isArray(mint) ? mint[0] : mint;
             if (!searchValue) {setIsLoading(false); return};
+
+            if (searchValue = '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU') {document.body.style.backgroundColor = "#cc33ff"}
+            else {document.body.style.backgroundColor = "black"}
             const mintPubKey = tryGetPubKey(searchValue);
             if (!mintPubKey) {setIsLoading(false); return};
             const info = await connection.getAccountInfo(mintPubKey);
