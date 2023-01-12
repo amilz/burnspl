@@ -16,15 +16,27 @@
 
 }
 
-.footer {
+/* .footer {
   display: flex;
   flex: 1;
   padding: 2rem 0;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
-}
+} */
 
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  align-items: center;
+  text-align: center;
+  border-top: 2px white solid;
+  padding: 25px;
+}
 
 
 .footer a {
