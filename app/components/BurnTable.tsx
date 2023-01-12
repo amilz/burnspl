@@ -66,13 +66,15 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
     setUserAccount(burnScores.find(user => { return walletAdapter?.publicKey?.toString() == user.account.pyroKey.toString() }));
   }, [walletAdapter, burnScores, connection])
 
+  let showTable = burnScores.length > 0
 
   return (<>
     {!walletAdapter.publicKey ? <p>Connect Wallet to Burn!</p> :
       userAccount ? <BurnToken tokenData={props.tokenData} onBurn={() => setUpdateTable(!updateTable)} /> :
         <NewUser tokenData={props.tokenData}  onInit={() => setUpdateTable(!updateTable)} />}
     <Loading show={loadingTable} text={`Finding top ${props.tokenData.name}ers`}/>
-    {burnScores && <table>
+    {!showTable ? 'Be the first!' : ''}
+    {(showTable && burnScores) && <table>
       <thead>
         <tr>
           <th>Rank</th>
