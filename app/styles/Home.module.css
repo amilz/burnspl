@@ -145,6 +145,7 @@
   animation: blink-animation 1s steps(5, start) infinite;
   -webkit-animation: blink-animation 1s steps(5, start) infinite;
   margin-bottom: 10px;
+  background-color: black;
 }
 @keyframes blink-animation {
   to {
