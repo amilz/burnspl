@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/Loading';
 import { TokenView } from '../../components/TokenView';
+import { KNOWN_MINTS } from '../../utils/constants';
 import { MintWithMetadata, tryGetTokenMetaData } from '../../utils/metaplex';
 import { tryGetPubKey, tryParseTokenMint } from '../../utils/solana';
 
@@ -17,19 +18,20 @@ export default function Home() {
     useEffect(() => {
         (async () => {
             setIsLoading(true);
-            if (!router.isReady) {setIsLoading(false); return};
+            if (!router.isReady) { setIsLoading(false); return };
             const { mint } = router.query;
             let searchValue = Array.isArray(mint) ? mint[0] : mint;
-            if (!searchValue) {setIsLoading(false); return};
-            if (searchValue = '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU') {document.body.style.backgroundColor = "#cc33ff"}
-            else {document.body.style.backgroundColor = "black"}    
+            if (!searchValue) { setIsLoading(false); return };
+            let knownMint = Object.keys(KNOWN_MINTS).find(address => address === searchValue);
+            if (knownMint) { document.body.style.backgroundColor = KNOWN_MINTS[knownMint].background }
+            else { document.body.style.backgroundColor = "black" }
             const mintPubKey = tryGetPubKey(searchValue);
-            if (!mintPubKey) {setIsLoading(false); return};
+            if (!mintPubKey) { setIsLoading(false); return };
             const info = await connection.getAccountInfo(mintPubKey);
-            if (!info || !info.data) {setIsLoading(false); return};
+            if (!info || !info.data) { setIsLoading(false); return };
             const tokenMintData = await tryParseTokenMint(info.data, connection);
-            if (!tokenMintData) {setIsLoading(false); return};
-            const mintWithMeta = await tryGetTokenMetaData(connection,mintPubKey);
+            if (!tokenMintData) { setIsLoading(false); return };
+            const mintWithMeta = await tryGetTokenMetaData(connection, mintPubKey);
             setTokenData(mintWithMeta);
             setMint(mintWithMeta.mint);
             setIsLoading(false);
@@ -38,10 +40,10 @@ export default function Home() {
 
     return (
         // TO DO ADD More margin above body. (hitting the navbar rn)
-        <> 
-        {tokenData ? <TokenView tokenData={tokenData}/> : 
-        !isLoading ? <div className='mid-notice'>invalid mint</div> : 
-        <div className="mid-notice"><Loading show={isLoading} text={'Loading . . . '}/></div>}
+        <>
+            {tokenData ? <TokenView tokenData={tokenData} /> :
+                !isLoading ? <div className='mid-notice'>invalid mint</div> :
+                    <div className="mid-notice"><Loading show={isLoading} text={'Loading . . . '} /></div>}
         </>
     )
 }
