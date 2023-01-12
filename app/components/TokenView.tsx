@@ -39,7 +39,7 @@ export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
     return (
         <div className={styles.container}>
             <main className={styles.main}>
-                <NavBar tokenBalance={tokenBalance} tokenSymbol={props.tokenData.symbol} />
+                <NavBar tokenBalance={tokenBalance} tokenSymbol={props.tokenData.symbol} /><br/><br/><br/>
                 {props.tokenData.img ? <Image src={props.tokenData.img} className='on-top' style={{borderRadius: '50%'}} height={200} width={200} alt={props.tokenData.name || props.tokenData.mint.toBase58()} /> : <></>}
                 <TotalTokensBurned tokenData={props.tokenData} tokensBurned={totalBurn} />
                 <BurnTable tokenData={props.tokenData} updateTotalBurn={(amt) => { setTotalBurn(amt) }} />
