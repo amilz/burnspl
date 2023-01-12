@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import NavBar from "../components/NavBar";
 import Search from "../components/Search";
 import styles from "../styles/Home.module.css"
 
 export default function Home() {
-  document.body.style.backgroundColor = "black";
+  useEffect(() => {
+    document.body.style.backgroundColor = "black";
+  }, []);
   return (
     <div className={styles.container}>
       <main className={styles.main}>
