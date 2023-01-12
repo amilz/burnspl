@@ -81,7 +81,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
     <form onSubmit={handleCreateAccount}>
       <div className="buttonHolder">
 
-          <button type="submit">Join the {props.tokenData.name} Fire</button><br/>
+          <button type="submit">Create {props.tokenData.name} Burn Account</button><br/>
 
     <label>
       Username  <small>(optional) </small></label><br/>
