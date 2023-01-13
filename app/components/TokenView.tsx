@@ -34,7 +34,7 @@ export const TokenView: FC<TokenViewProps> = (props: TokenViewProps) => {
                 console.log(err);
             }
         })();
-    }, [publicKey, connection, refreshToken])
+    }, [publicKey, connection, refreshToken, props])
 
     return (
         <div className={styles.container}>
