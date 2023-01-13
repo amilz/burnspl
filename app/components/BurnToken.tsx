@@ -59,7 +59,7 @@ const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
         lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
       });
       if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
-      console.log('   ✅ - Success!', generateExplorerUrl(signature));
+      console.log('   ✅ - Success!', generateExplorerUrl(signature, 'mainnet-beta'));
       props.onBurn();
     }
     catch (err) {

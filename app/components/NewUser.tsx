@@ -65,7 +65,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
         lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
       });
       if (confirmation.value.err) throw new Error("Error: Could not confirm transaction");
-      console.log('   ✅ - Success!', generateExplorerUrl(signature));
+      console.log('   ✅ - Success!', generateExplorerUrl(signature, 'mainnet-beta'));
       props.onInit();
     }
     catch (err) {
