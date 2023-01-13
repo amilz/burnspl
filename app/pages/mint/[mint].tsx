@@ -38,7 +38,7 @@ export default function Home() {
             setMint(mintWithMeta.mint);
             setIsLoading(false);
         })();
-    }, [router.isReady]);
+    }, [router.isReady, router.query, connection]);
 
     return (
         // TO DO ADD More margin above body. (hitting the navbar rn)

@@ -26,7 +26,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
   const { burnBoardProgram } = useWorkspace();
   const walletAdapter = useWallet();
 
-  useMemo(() => {
+  useEffect(() => {
     if (!burnBoardProgram) return
     setLoadingTable(true);
     (async () => {
@@ -60,7 +60,7 @@ const BurnTable: FC<BurnTableProps> = (props: BurnTableProps) => {
         setLoadingTable(false);
       }
     })();
-  }, [updateTable])
+  }, [updateTable, burnBoardProgram, props])
   useEffect(() => {
     if (!walletAdapter || !walletAdapter.publicKey || !burnScores) { setUserAccount(undefined) }
     setUserAccount(burnScores.find(user => { return walletAdapter?.publicKey?.toString() == user.account.pyroKey.toString() }));
