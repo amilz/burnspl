@@ -72,7 +72,7 @@ const BurnToken: FC<BurnTokenProps> = (props:BurnTokenProps) => {
 
   }
   return (
-    loading ? <Loading show={true} text={`BURNING ${props.tokenData.symbol}`}/>:
+    loading ? <Loading show={true} text={`🔥 BURNING ${props.tokenData.symbol} 🔥`}/>:
     <form onSubmit={handleBurn}>
     <label>
       How much ${props.tokenData.symbol} to burn? &nbsp;
