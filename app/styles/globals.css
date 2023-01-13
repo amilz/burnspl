@@ -36,8 +36,8 @@ button {
   min-width: 110px;
 }
 button:hover {
-  background-color: #e4e4e4;
-  color: black;
+  background-color: #5f5f5f;
+  color: white;
 }
 
 input[type="text"],
@@ -154,6 +154,7 @@ form {
 
 .mid-notice {
   margin-top: 30vh;
+  background-color: black;
 }
 
 .search-result {
