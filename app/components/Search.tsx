@@ -25,16 +25,16 @@ const Search: FC = () => {
       handleSearch(searchKey);
     } catch (e) {
       setError('Not a valid Public Key');
-      if (foundKey) {setFoundKey(undefined)}
+      if (foundKey) { setFoundKey(undefined) }
     }
   }
   const handleSearch = async (pubKey: PublicKey) => {
     if (!pubKey) return;
     setLoading(true);
     const info = await connection.getAccountInfo(pubKey);
-    if (!info || !info.data) {setError('Acct Not Found'); setLoading(false); return;};
+    if (!info || !info.data) { setError('Acct Not Found'); setLoading(false); return; };
     const tokenMintData = tryParseTokenMint(info.data, connection);
-    if (!tokenMintData) {setError('Acct Valid Mint Accoun'); setLoading(false); return;};
+    if (!tokenMintData) { setError('Acct Valid Mint Accoun'); setLoading(false); return; };
     setLoading(false);
     setIsValid(true);
   }
@@ -45,17 +45,18 @@ const Search: FC = () => {
         <div className="buttonHolder">
           <br />
           <label>
-            Search Mint Address:</label><br /><br/>
+            Search Mint Address:</label><br /><br />
           <input
             name="mintAddress"
             id="search-bar"
             type="text"
             maxLength={44}
             value={searchAddress}
-            onChange={(e) => onValueChange(e)} /><br/>
-            <br/>
-            {error && <div className="search-error">{error}</div>}
-            {(isValid && foundKey) && <div className="search-result"><Link href={`/mint/${foundKey.toBase58()}`}>👉 Go burn some {shortWallet(foundKey)} 🔥🔥🔥</Link></div>}
+            onChange={(e) => onValueChange(e)} /><br />
+          <br />
+          {(!isValid && !foundKey && !error) && <div className="home-descr">Track token burns with your community!<br /><br />Select Token &gt; Create Account &gt; Burn!</div>}
+          {error && <div className="search-error">{error}</div>}
+          {(isValid && foundKey) && <div className="search-result"><Link href={`/mint/${foundKey.toBase58()}`}>👉 Go burn some {shortWallet(foundKey)} 🔥🔥🔥</Link></div>}
         </div>
       </form>
   )

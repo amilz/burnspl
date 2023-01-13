@@ -153,11 +153,15 @@ form {
 }
 
 .mid-notice {
-  margin-top: 30vh;
+  margin-top: 25vh;
   background-color: black;
 }
 
 .search-result {
   padding: 3px;
 
+}
+
+.home-descr {
+  line-height: 2;
 }
