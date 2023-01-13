@@ -84,7 +84,7 @@ const NewUser: FC<NewUserProps> = (props:NewUserProps) => {
           <button type="submit">Create {props.tokenData.name} Burn Account</button><br/>
 
     <label>
-      Username  <small>(optional) </small></label><br/>
+      Username <small>(optional, 8 char max) </small></label><br/>
       <input
         name="userName"
         id="enterName"
