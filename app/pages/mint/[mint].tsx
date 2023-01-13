@@ -22,6 +22,8 @@ export default function Home() {
             const { mint } = router.query;
             let searchValue = Array.isArray(mint) ? mint[0] : mint;
             if (!searchValue) { setIsLoading(false); return };
+            let knownTokenId = Object.keys(KNOWN_MINTS).find(address => KNOWN_MINTS[address].id === searchValue);
+            if (knownTokenId) {searchValue = knownTokenId}
             let knownMint = Object.keys(KNOWN_MINTS).find(address => address === searchValue);
             if (knownMint) { document.body.style.backgroundColor = KNOWN_MINTS[knownMint].background }
             else { document.body.style.backgroundColor = "black" }
