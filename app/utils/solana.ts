@@ -2,7 +2,7 @@ import { Cluster, Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.j
 import { BurnScoreWithPda } from "./idl";
 import { publicKey, u64, bool } from '@solana/buffer-layout-utils';
 import { u32, u8, struct } from '@solana/buffer-layout';
-import { TokenListProvider } from "@solana/spl-token-registry";
+import { TokenListProvider } from "solana-token-list";
 
 export function generateExplorerUrl(txId: string, cluster: Cluster = 'devnet', address?: string) {
   if (!address) return `https://explorer.solana.com/tx/${txId}/?cluster=${cluster}`;
