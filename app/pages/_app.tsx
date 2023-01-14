@@ -1,4 +1,5 @@
-import '../styles/globals.css'
+import '../styles/globals.css';
+import '../styles/stars.css';
 import type { AppProps } from 'next/app'
 import WalletContextProvider from '../components/WalletContextProvider'
 import { WorkspaceProvider } from '../components/WorkspaceProvider'
